@@ -1,0 +1,11 @@
+1.终端启动redis-server。
+2.新建一个终端窗口，进入redis安装目录。
+3.输入redis-cli启动测试服务
+4.如果报错说未安装，则安装redis-cli即可，命令为：
+  sudo apt install redis-tools
+5.127.0.0.1:6379> 
+  当终端变成这样说明进入成功
+6.退出
+  方法一：redis-cli shutdown
+  方法二：在redis启动成功页面，control+c
+  方法三：杀进程
