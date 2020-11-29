@@ -1,0 +1,11 @@
+redis的安装
+1.我是linux环境，官网下载redis.io。
+2.把下载好的redis压缩包解压，命令：tar -zvxf redis-6.0.9.tar.gz，最好把解压后的文件夹移动（mv）到/etc/opt/文件夹下。
+3.检查gcc存在，gcc -v。
+4.进入到redis文件夹下的/src目录，输入编译命令：make 。
+5.然后在make install安装。 如果想指定安装位置：make PREFIX=/usr/local/redis install
+  PREFIX=后面写上自己想安装的位置。
+6.复制redis文件夹下的redis.conf,放在在安装位置。这个是作为配置文件。
+7.启动redis
+  /bin/redis-server& ./redis.conf
+  至此安装基本完毕。
