@@ -1,0 +1,7 @@
+ 1. 正常关闭本地redis :  redis-cli shutdown，　默认关闭本地6379的redis
+ 2. 如果正常关闭不了，可以通过杀死线程关闭：
+    查询redis进程的pid
+    ps -ef|grep redis
+    找到pid后
+    kill -9 pid
+    强制关闭
