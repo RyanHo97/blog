@@ -1,0 +1,39 @@
+http://doc.redisfans.com/
+自我总结常用命令：
+
+set
+get
+EXISTS
+ttl key
+expire key seconds
+
+String
+incr/decr/incrby/decrby
+getrange
+setrange
+setex
+setnx
+mset
+mget
+msetnx
+
+List
+lpush
+rpush
+lrange
+lpop
+rpop
+lindex
+llen
+lrem key
+ltrim key
+rpoplpush
+lset key index value
+linsert key before/after
+
+set
+sadd
+smembers
+sismember
+srem key value
+scard
