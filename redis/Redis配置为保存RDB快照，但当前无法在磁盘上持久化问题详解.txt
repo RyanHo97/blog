@@ -1,0 +1,26 @@
+MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk
+
+很多搞开发的朋友在开发过程中或者程序运行一段时间之后会突然报错出现这个问题,造成了服务的宕机,查看日志发现是redis造成的
+
+Redis配置为保存RDB快照，但当前无法在磁盘上持久化
+
+解决方法:
+1.找到redis.conf文件
+2.修改配置文件并重启生效
+
+(1) 使用指令修改(无需重启redis,不一定生效)
+root@ubuntu:/usr/local/redis/bin# ./redis-cli
+127.0.0.1:6379> config set stop-writes-on-bgsave-error no
+OK
+127.0.0.1:6379> lpush myColour "red"
+(2) 直接修改配置文件
+[root@VM_0_11_centos etc]# vi redis.conf 
+#进入redis.conf文件
+/stop-writes-on-bgsave-error
+#找到要修改的stop-writes-on-bgsave-error配置项
+stop-writes-on-bgsave-error no
+#修改该配置项为no
+:wq
+#保存退出
+./bin/redis-server ./etc/redis.conf 
+#重启redis并加载配置项
