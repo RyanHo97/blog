@@ -8,7 +8,7 @@ Redis配置为保存RDB快照，但当前无法在磁盘上持久化
 1.找到redis.conf文件
 2.修改配置文件并重启生效
 
-(1) 使用指令修改(无需重启redis,不一定生效)
+一. 使用指令修改(无需重启redis,不一定生效)
 root@ubuntu:/usr/local/redis/bin# ./redis-cli
 127.0.0.1:6379> config set stop-writes-on-bgsave-error no
 OK
@@ -24,3 +24,40 @@ stop-writes-on-bgsave-error no
 #保存退出
 ./bin/redis-server ./etc/redis.conf 
 #重启redis并加载配置项
+
+二. 修改linux的sysctl.conf文件(永久生效)
+1.查找linux的sysctl.conf文件
+[root@VM_0_11_centos ~]# find / -name sysctl.conf
+/etc/sysctl.conf
+2.修改sysctl.conf文件的配置项并生效
+[root@VM_0_11_centos ~]# cd /etc/
+[root@VM_0_11_centos etc]# vi sysctl.conf
+#修改其中的overcommit_memory配置项
+/overcommit_memory
+#若没有该配置项,则在配置文件尾部追加
+vm.overcommit_memory=1
+#保存该配置文件并重新启动加载该文件
+sysctl -p /etc/sysctl.conf
+
+以上是解决该问题的两种方式
+
+下面我们来细究一下为什么会产生这个问题
+
+先来看一波redis的官方解释
+redis官网的FAQ
+貌似是由于内存的分配导致了写入磁盘出现问题,那么这样我们再来看一下这个过程
+首先我们需要认识一下 BGSAVE 这个指令
+BGSAVE执行期间,Redis派生一个子进程以将数据保存在磁盘上
+理论上子进程会和父进程拥有同样多的内存空间,但实际上,子进程和父进程共享内存空间,并且当数据集大于内存空间时子进程会挂掉.
+这样导致子进程分配内存空间时无法确切知道自己需要多少的内存空间,而在实际运行过程中,即使有足够大的RAM也有可能导致分配内存空间失败的可能,进而导致redis写入磁盘失败报错.
+
+那么我们为什么修改 overcommit_memory 呢
+overcommit_memory是一个内核对内存分配的一种策略,默认是 0
+overcommit_memory取值又三种分别为0， 1， 2
+overcommit_memory=0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。
+overcommit_memory=1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。
+overcommit_memory=2， 表示内核允许分配超过所有物理内存和交换空间总和的内存
+
+所以当我们设置为 1 时,会将所有的内存分配下去,此时只有当redis的数据集真正的超过了内存上限才会导致子进程的失败
+
+原帖：https://blog.csdn.net/never_all/article/details/109001236
