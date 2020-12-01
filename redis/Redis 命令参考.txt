@@ -37,3 +37,38 @@ smembers
 sismember
 srem key value
 scard
+spop key
+smove
+sdiff
+sinter
+sunion
+
+hash
+hset
+hget
+hmset
+hmget
+hgetall
+hdel
+hexists
+hkeys
+hvals
+hincrby
+hincrbyfloat
+hsetnx
+
+zset
+zadd
+zrange
+zrange key 0 -1 withscores
+zrangebyscore key score1 score2
+zrangebyscore key score1 score2 limit
+zrem key
+zcount
+zrank
+zscore
+zrevrank
+zrevrange
+zrevrangebyscore
+
+
