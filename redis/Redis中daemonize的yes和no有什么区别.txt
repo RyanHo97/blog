@@ -1,0 +1,6 @@
+daemonize是用来指定redis是否要用守护线程的方式启动。
+
+当我们采用yes时，redis会在后台运行，此时redis将一直运行，除非手动kill该进程。同时将进程pid号写入至redis.conf选项pidfile设置的文件中，默认会生成在/var/run/redis.pid，也可以通过pidfile来指定pid文件生成的位置
+pidfile /path/redis.pid
+
+而采用no时，当前界面将进入redis的命令行界面，exit强制退出或者关闭连接工具(putty,xshell等)都会导致redis进程退出。
