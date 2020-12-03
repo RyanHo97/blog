@@ -1,0 +1,17 @@
+简述：
+deb是 Debian Linux 的软件包格式，打包最关键的是在DEBIAN 目录下创建一个 control 文件。
+dpkg命令是Debian Linux系统用来安装、创建和管理软件包的实用工具。
+
+https://blog.csdn.net/hebbely/article/details/78521476
+
+最简单的就是使用dpkg 命令来安装和卸载。
+安装
+dpkg -i LidarPlus_1.0.1_i386.deb
+
+//强制安装
+dpkg --force-depends -i LidarPlus_1.0.1_i386.deb
+dpkg --force-all -i LidarPlus_1.0.1_i386.deb
+
+卸载
+dpkg -r LidarPlus
+sudo apt-get remove LidarPlus
