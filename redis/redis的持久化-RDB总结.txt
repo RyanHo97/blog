@@ -1,0 +1,46 @@
+RDB
+Redis DataBase
+在指定的时间间隔将内存中的数据集快照写入磁盘，也就是行话讲的Snapshot快照，它恢复时是将快照文件直接读到内存里。
+
+优势：
+1、适合大规模的数据恢复
+2、对数据完整性和一致性要求不高
+
+劣势：
+1、意外down掉，就会丢失最后一次快照的所有修改
+2、Fork的时候，内存中的数据被克隆了一份，大致2倍的膨胀性需要考虑。
+
+dump.rdb
+
+在redis.conf中
+save <second> <changes>
+默认3种策略
+save 900 1
+save 300 10
+save 60 10000
+SHUTDOWN会马上dump.rdb生成。
+
+名称设置
+dbfilename dump.rdb
+
+如何恢复
+直接放在DB配置目录路径下即可恢复
+
+获取配置目录
+config get dir
+
+设置报错自动停止保存功能
+stop-writes-on-bgsave-error yes
+stop-writes-on-bgsave-error no
+
+快照是否进行压缩储存
+rdbcompression no
+
+使用CRC64算法进行数据校验
+rdbchecksum no
+
+save 保存
+bgsave 后台异步快照
+
+停止RDB
+redis-cli config set save ""
