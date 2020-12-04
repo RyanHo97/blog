@@ -1,0 +1,13 @@
+先连上redis 后输入bai config get appendonly 验证是否du开启 aof 持久化
+开启的结zhi果为 yes，没有开启结dao果为 no
+127.0.0.1:6379> config get appendonly
+1) "appendonly"
+2) "yes"
+两种方式解zhuan决：
+1： 如果你发现在配置文shu件中直接修改不起作用，可以通过命令解决
+127.0.0.1:6379> config set appendonly yes // 对服务器的当前配置进行修改
+OK
+127.0.0.1:6379> config rewrite // 将修改后的配置写入配置文件（不写断开连接后就会失效）
+
+OK
+2：你是不是发现有2个以 .conf 结尾的文件，要改两个都改
