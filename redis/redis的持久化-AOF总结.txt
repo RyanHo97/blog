@@ -1,3 +1,32 @@
 AOF
 Append Only File
 以日志的形式来记录每个写操作，将redis执行过的所有写指令记录下来（读操作不记录），只许追加文件但不可以改写文件，redis启动之初会读取该文件重新构建数据。
+
+默认状态下是关闭的
+append only no/yes
+
+文件名
+appendfilename "appendonly.aof"
+
+*AOF与RDB可以同时存在
+恢复时先AOF，后RDB
+
+AOF文件如果损坏可以修复：
+redis-check-aof --fix appendonly.aof
+
+AOF配置策略
+Appendfsync Always  同步持久化，立即
+            Everysec 默认，1秒
+            No 关闭自动
+Rewrite
+AOF采用文件追加方式，文件会越来越大，避免出现此情种情况，新增了重写机制。
+当AOF文件的大小超过所设定的阀值时，redis就会启动AOF文件的内容压缩。
+只保留可以恢复数据的最小指令集。
+命令：bgrewriteaof
+
+redis.conf中：
+auto-aof-rewrite-percentage 100  倍数
+auto-aof-rewrite-min-size 64mb   大小
+实际项目中建议5GB。
+
+只做缓存可以不使用任何持久化方式。
