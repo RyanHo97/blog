@@ -1,0 +1,26 @@
+redis的消息：
+  进程间的一种消息通信模式：发送者（pub）发送消息，订阅者（sub）接受消息。
+
+实现：
+    开启本地 Redis 服务，开启两个 redis-cli 客户端。
+
+    在第一个 redis-cli 客户端输入 SUBSCRIBE runoobChat，意思是订阅 runoobChat 频道。
+
+    在第二个 redis-cli 客户端输入 PUBLISH runoobChat "Redis PUBLISH test" 往 runoobChat 频道发送消息，这个时候在第一个 redis-cli 客户端就会看到由第二个 redis-cli 客户端发送的测试消息。
+
+
+
+命令：
+1	PSUBSCRIBE pattern [pattern ...]
+订阅一个或多个符合给定模式的频道。
+2	PUBSUB subcommand [argument [argument ...]]
+查看订阅与发布系统状态。
+3	PUBLISH channel message
+将信息发送到指定的频道。
+4	PUNSUBSCRIBE [pattern [pattern ...]]
+退订所有给定模式的频道。
+5	SUBSCRIBE channel [channel ...]
+订阅给定的一个或多个频道的信息。
+6	UNSUBSCRIBE [channel [channel ...]]
+指退订给定的频道。
+
