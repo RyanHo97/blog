@@ -1,0 +1,31 @@
+问题描述：
+
+dpkg: 处理软件包 initramfs-tools (–configure)时出错：
+已安装 initramfs-tools 软件包 post-installation 脚本 子进程返回错误状态 1
+在处理时有错误发生：
+initramfs-tools
+E: Sub-process /usr/bin/dpkg returned an error code (1)
+
+解决办法：
+
+知识点积累
+#/var/lib/dpkg/info
+#用于保存各个软件包的配置文件列表， dpkg是Debian的中级软件包管理器,类似RPM.dpkg是Debian软件包管理系统的中流砥柱,负责安全卸载软件包,配置,以及维护已安装的软件包.
+
+需要写的命令
+1.$ sudo mv /var/lib/dpkg/info /var/lib/dpkg/info_old //现将info文件夹更名
+
+2.$ sudo mkdir /var/lib/dpkg/info //再新建一个新的info文件夹
+
+3.$ sudo apt-get update
+
+4.apt-get -f install //是修复依赖关系的命令，就是假如你的系统上有某个package不满足依赖条件，这个命令可以自动修复，安装那个package以来的package。
+
+5.$ sudo mv /var/lib/dpkg/info/* /var/lib/dpkg/info_old //执行完上一步操作后会在新的info文件夹下生成一些文件，现将这些文件全部移到info_old文件夹下
+
+6.$ sudo rm /var/lib/dpkg/info -f //把自己新建的info文件夹删掉 删除文件夹需要加上-f，也可以用rmdir命令删除一个目录，目录必须是空目录。
+
+7.$ sudo mv /var/lib/dpkg/info_old /var/lib/dpkg/info //把以前的info文件夹重新改回名字
+
+原文链接
+https://blog.csdn.net/gaoyu1253401563/article/details/82806453
