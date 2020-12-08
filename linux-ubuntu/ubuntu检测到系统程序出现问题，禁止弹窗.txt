@@ -1,0 +1,15 @@
+https://linux.cn/article-5904-1.html
+
+sudo rm /var/crash/*
+这个操作会删除所有在/var/crash目录下的所有内容。这样你就不会再被这些报告以前程序错误的弹窗所扰。
+但是如果又有一个程序崩溃了，你就会再次看到“检测到系统程序错误”的错误。你可以再次删除这些报告文件，或者你可以禁用Apport来彻底地摆脱这个错误弹窗。
+
+要禁止Apport，并且彻底地摆脱Ubuntu系统中的程序崩溃报告，打开一个终端，输入以下命令：
+gksu gedit /etc/default/apport
+
+    # 设置0表示禁用Apportw，或者1开启它。
+    # 你可以用下面的命令暂时关闭它：
+    # sudo service apport start force_start=1
+    enabled=1
+    
+把enabled=1改为enabled=0。保存并关闭文件。完成之后你就再也不会看到弹窗报告错误了。很显然，如果我们想重新开启错误报告功能，只要再打开这个文件，把enabled设置为1就可以了。
