@@ -1,0 +1,17 @@
+1.官网下载
+  http://activemq.apache.org/
+2.移动到/etc/opt
+3.解压缩 tar -zxvf 文件名
+4.在根目录下 mkdir /myactivemq
+5.cp解压后文件夹到/myactivemq
+6.普通启动mq
+  ./activemq start
+7.activemq的默认进程端口是61616
+8.k:v activemq:61616 查看后台方法
+  8.1 ps -ef|grep activemq|grep -v grep
+  8.2 netstat -anp|grep 61616
+  8.3 lsof -i:61616
+9.关闭
+  ./activemq stop
+10.增加log文件，带日志启动
+  ./activemq start >/myactivemq/myrunmq.log
