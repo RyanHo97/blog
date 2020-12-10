@@ -1,0 +1,13 @@
+SpringBoot是由Pivotal团队在2013年开始研发、2014年4月发布第一个版本的全新开源的轻量级框架。
+它基于Spring4.0设计，不仅继承了Spring框架原有的优秀特性，而且还通过简化配置来进一步简化了Spring应用的整个搭建和开发过程。
+另外SpringBoot通过集成大量的框架使得依赖包的版本冲突，以及引用的不稳定性等问题得到了很好的解决。
+
+SpringBoot所具备的特征有：
+（1）可以创建独立的Spring应用程序，并且基于其Maven或Gradle插件，可以创建可执行的JARs和WARs；
+（2）内嵌Tomcat或Jetty等Servlet容器；
+（3）提供自动配置的“starter”项目对象模型（POMS）以简化Maven配置；
+（4）尽可能自动配置Spring容器；
+（5）提供准备好的特性，如指标、健康检查和外部化配置；
+（6）绝对没有代码生成，不需要XML配置。
+
+官方网址：https://spring.io/projects/spring-boot
