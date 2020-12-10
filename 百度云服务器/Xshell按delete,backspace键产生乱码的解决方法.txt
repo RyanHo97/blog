@@ -1,0 +1,11 @@
+在用Xshell登录进入linux后,默认情况下如果敲击delete,backspace键时会产生^H等乱码问题，这是因为编码不匹配的问题.
+
+点击面板上的小齿轮或者是File下的Properties效果是一样的
+
+弹出的对话框中,选择Terminal下的Keyboard.如下设置:
+
+在DELETE key sequence中选择ASCII 127(ctrl+?)
+
+在BACKSPACE key sequence中选择ASCII 127(ctrl+?)
+
+设置完毕，点击OK即可。
