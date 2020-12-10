@@ -1,0 +1,133 @@
+在点对点的消息传递域中，目的地被称为队列(Queue)
+
+·每个消息只能有一个消费者，类似1对1的关系。好比个人快递自己领取自己的。
+·消息的生产者和消费者之间没有时间上的相关性。无论消费者在生产者发送消息的时候是否处于运行状态，消费者都可以提取消息。好比我们的发送短信，发送者发送后不见得接收者会即收即看。
+·消息被消费后队列中不会再存储，所以消费者不会消费到已经被消费掉的消息。
+
+入门代码
+·pom.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hgx</groupId>
+    <artifactId>activemq-start</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>5.15.10</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
+
+队列queue生产者
+import org.apache.activemq.ActiveMQConnectionFactory;
+import javax.jms.*;
+
+public class FirstQueueProvider {
+
+    private static final String url = "tcp://xxx:61616";
+
+    public static void main(String[] args) throws JMSException {
+
+        //1.创建连接工厂，按照给定的URL地址，使用默认的用户和密码
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+        //2.通过连接工厂获取connection并访问
+        Connection connection = connectionFactory.createConnection();
+        connection.start();
+        //3.创建会话session
+        //两个参数，第一参数：事务，第二个参数：签收
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        //4.创建目的地，具体是队列Queue还是主题topic
+        Queue queue01 = session.createQueue("queue01");
+        //5.创建消息的生产者
+        MessageProducer messageProducer = session.createProducer(queue01);
+        //6. 通过消息生产者生产消息到MQ
+        for (int i = 0; i < 3; i++) {
+            //6.1 创建消息
+            //文本消息
+            TextMessage textMessage = session.createTextMessage("hello activeMQ--msg " + i);
+            //6.2 发送到MQ
+            messageProducer.send(textMessage);
+        }
+
+        //7.关闭资源
+        messageProducer.close();
+        session.close();
+        connection.close();
+
+        System.out.println("消息发送成功************");
+    }
+}
+
+队列queue消费者
+import org.apache.activemq.ActiveMQConnectionFactory;
+import javax.jms.*;
+import java.io.IOException;
+
+public class FirstQueueConsumer {
+    private static final String url = "tcp://xxx:61616";
+
+    public static void main(String[] args) throws JMSException, IOException {
+        //1.创建连接工厂，按照给定的URL地址，使用默认的用户和密码
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+        //2.通过连接工厂获取connection并访问
+        Connection connection = connectionFactory.createConnection();
+        connection.start();
+        //3.创建会话session
+        //两个参数，第一参数：事务，第二个参数：签收
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        //4.创建目的地，具体是队列Queue还是主题topic
+        Queue queue01 = session.createQueue("queue01");
+        //5.创建消费者
+        MessageConsumer messageConsumer = session.createConsumer(queue01);
+
+        //消费方式1：同步阻塞方式（receive）订阅者或接收者调用MessageConsumer的receive方法来接收，receive方法在接收到消息之前或超时之前将一直阻塞
+//        while (true) {
+//            Message message = messageConsumer.receive(6000);
+//            if (message instanceof TextMessage) {
+//                TextMessage textMessage = (TextMessage) message;
+//                System.out.println(textMessage.getText());
+//            } else {
+//                break;
+//            }
+//
+//        }
+
+        //消费方式2：异步非阻塞方式（监听器onMessage()方法）订阅者或接收者通过MessageConsumer的setMessageListener注册监听器，当消息到达之后，系统自动调用监听器MessageListener的onMessage方法
+        messageConsumer.setMessageListener(new MessageListener() {
+            public void onMessage(Message message) {
+                if (message instanceof TextMessage) {
+                    TextMessage textMessage = (TextMessage) message;
+                    try {
+                        String text = textMessage.getText();
+                        System.out.println(text);
+                    } catch (JMSException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        System.in.read();
+
+        //关闭资源
+        messageConsumer.close();
+        session.close();
+        connection.close();
+    }
+
+}
+
