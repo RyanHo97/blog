@@ -1,0 +1,34 @@
+四大元素：
+JMS provider 中间件
+JMS producer 消息生产者
+JMS consumer 消息消费者
+JMS message  {消息头、消息体、消息属性}
+
+Message 消息头
+JMS Destination 消息发送的目的地，主要是指Queue和Topic。
+JMS DeliveryMode 持久和非持久模式。
+  ·一条持久性消息：应该被传送“一次仅仅一次”，这就意味着如果JMS提供者出现故障，该消息并不会消失，它会在服务器恢复之后再次传送。
+  ·一条非持久性消息：最多会传送一次，这意味着服务器出现故障，该消息将永远丢失。
+JMS Expiration 过期时间
+  ·可以设定消息在一定时间后过期，默认是永不过期。
+  ·Send中的TimeToLive
+JMS Priority 优先级
+  ·消息优先级，从0-9是个级别，0-4是普通消息，5-9是加急消息。
+  ·JMS不要求MQ严格按照这十个优先级发送消息，但必须保证加急消息要先于普通消息到达，默认是4级。
+JMS MessageID 标识*
+  ·唯一识别每个消息的标识由MQ产生
+
+Message消息体
+  ·封装具体的消息数据
+  一共有5种消息格式：
+    ·TextMessage 普通字符串消息，包含一个String
+    ·MapMessage  一个Map类型的消息，Key为String类型，而值为Java的基本类型
+    ·ByteMessage 二进制数组消息，包含一个byte[]
+    ·StreamMessage Java数据流消息，用标准流操作来顺序填充和读取。
+    ·ObjectMessage 对象消息，包含一个可序列化的Java对象
+  发送和接受的消息体类型必须一致对应。
+  
+Message消息属性
+  ·如果需要除消息头字段以外的值，那么可以使用消息属性。
+  ·识别/去重/重点标注等操作非常有用的方法。
+  ·是什么 StringProperty 加VIP或筛选。
