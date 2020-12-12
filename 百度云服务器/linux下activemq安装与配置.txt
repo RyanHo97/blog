@@ -1,0 +1,35 @@
+一、下载：apache-activemq-5.14.0-bin.tar.gz
+
+二、安装activemq
+1、gz文件拷贝到/usr/local/src目录
+2、解压启动
+tar -zxvf apache-activemq-5.14.0-bin.tar.gz
+ 
+cd apache-activemq-5.14.0
+cd bin
+./activemq start
+
+netstat -anp|grep 61616
+
+关闭 ./activemq start
+
+三、开启防火墙端口
+1、如果使用了云服务器需要先开启8161(web管理页面端口）、61616（activemq服务监控端口） 两个端口
+2、打开linux防火墙端口
+/sbin/iptables -I INPUT -p tcp --dport 8161 -j ACCEPT&&/etc/init.d/iptables save&&service iptables restart&&/etc/init.d/iptables status
+/sbin/iptables -I INPUT -p tcp --dport 61616 -j ACCEPT&&/etc/init.d/iptables save&&service iptables restart&&/etc/init.d/iptables status
+
+四、打开web管理页面
+http://IP:8161/admin
+默认用户名密码 admin/admin 
+
+如果要修改控制台的登录用户名密码，可以在conf/jetty-realm.properties文件中修改
+
+五、安全配置
+http://activemq.apache.org/security.html
+1、activemq.xml新增账号密码(broker标签下添加）
+
+2、程序代码中添加账号密码
+
+摘抄：
+https://www.cnblogs.com/shamo89/p/7645651.html
