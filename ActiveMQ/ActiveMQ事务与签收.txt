@@ -1,0 +1,109 @@
+前言
+这篇文章涉及到的MQ特性会稍微复杂一点。事务主要针对生产者来讲，签收主要针对消费者来讲的。
+代码同样放在文章的末尾供大家参考。
+
+1.消息的事务性
+①生产者开启事务后，执行commit方法，这批消息才真正的被提交。不执行commit方法，这批消息不会提交。执行roolback方法，之前的消息会回滚掉。生产者的事务机制，要高于签收机制，当生产者开启事务，签收机制不再重要。
+②消费者开启事务后，执行commit方法，这批消息才算真正的被消费。不执行commit方法，这些消息不会标记已消费，下次还会被消费。执行rollback方法，是不能回滚之前执行过的业务逻辑，但是能够回滚之前的消息，回滚后的消息，下次还会被消费。消费者利用commit和roolback方法，甚至能够违反一个消费者只能消费一次消息的原理
+
+生产者代码
+public class JmsProduce_TX {
+
+    public static final String ACTIVEMQ_URL = "tcp://127.0.0.1:61616";
+    public static final String QUEUE_NAME = "queue01";
+
+
+    public static void main(String[] args) throws JMSException {
+        //1.创建连接工厂,按照给定的url地址，采用默认的用户名和密码
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(ACTIVEMQ_URL);
+        //2.通过连接工厂，获得connection俩姐
+        Connection connection = activeMQConnectionFactory.createConnection();
+        connection.start();
+
+        //3.创建会话session
+        //两个参数，第一个叫事务/第二个叫签收
+        Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+
+        //4.创建目的地（具体是对立还是主题topic）
+        Queue quene = session.createQueue(QUEUE_NAME);
+
+        //5.创建消息的生产者
+        MessageProducer messageProducer = session.createProducer(quene);
+
+        //通过使用messageProducer
+        for(int i = 1; i<=3;i++){
+            //7.创建消息
+            TextMessage textMessage = session.createTextMessage("MessageListener"+i);
+
+            //8.通过messageProducer发送给mq
+            messageProducer.send(textMessage);
+        }
+        //9.关闭资源
+        messageProducer.close();
+        session.commit();
+        session.close();
+        connection.close();
+        System.out.println("****tx_消息发送到MQ完成");
+    }
+
+生产者的事务和之前的代码差不多，区别就是在创建Session的时候要把一参设为true。在session执行close之前需要先coommit。
+
+2.消息的签收机制
+签收的几种方式：
+①自动签收（Session.AUTO_ACKNOWLEDGE）：该方式是默认的。该种方式，无需我们程序做任何操作，框架会帮我们自动签收收到的消息。
+②手动签收（Session.CLIENT_ACKNOWLEDGE）：手动签收。该种方式，需要我们手动调用Message.acknowledge()，来签收消息。如果不签收消息。该消息会被我们反复消费，直到被签收
+③允许重复消息（Session.DUPS_OK_ACKNOWLEDGE）：多线程或多个 消费者同时消费到一个消息，因为先成功不安全，可能会重复消费。该种方式很少使用到。
+④事务下的签收（SESSION.SESSION_TRANSACTED）：开始事务的情况下，可以使用该方式。该种方式很少使用到。
+
+消费者代码
+public class JmsConsumer_TX {
+
+
+    public static final String ACTIVEMQ_URL = "tcp://127.0.0.1:61616";
+    public static final String QUEUE_NAME = "queue01";
+
+
+    public static void main(String[] args) throws JMSException, IOException {
+        //1.创建连接工厂,按照给定的url地址，采用默认的用户名和密码
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(ACTIVEMQ_URL);
+        //2.通过连接工厂，获得connection俩姐
+        Connection connection = activeMQConnectionFactory.createConnection();
+        connection.start();
+
+        //3.创建会话session
+        //两个参数，第一个叫事务/第二个叫签收
+        Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
+
+        //4.创建目的地（具体是对立还是主题topic）
+        Queue quene = session.createQueue(QUEUE_NAME);
+
+        //5.创建消费者
+        MessageConsumer messageConsumer = session.createConsumer(quene);
+        //同步阻塞方式receive
+        while (true){
+            TextMessage textMessage = (TextMessage) messageConsumer.receive(3000L);
+            if (null != textMessage){
+                System.out.println("****消费者接收到消息："+textMessage.getText());
+                textMessage.acknowledge();
+            }else {
+                break;
+            }
+        }
+        messageConsumer.close();
+        session.commit();
+        session.close();
+        connection.close();
+    }
+
+3.事务和签收的关系
+①在事务性会话种，当一个事务被成功提交则消息被自动签收。如果事务胡滚，则消息会被再次传送。事务优先于签收，开始事务后，签收机制不再起任何作用。
+②非事务性会话种，消息何时被确认取决于创建会话时的应答模式。
+③生产者事务开启，只有commit后才能将全部消息变为已消费。
+④事务偏向生产者，签收偏向消费者。也就是说，生产者使用事务更好点，消费者使用签收机制更好。
+
+4. 代码地址
+github:https://github.com/Code-Gao/ActiveMQDemo
+
+
+原文链接:
+https://www.jianshu.com/p/36789eb02186
