@@ -1,0 +1,85 @@
+Broker是实现ActiveMQ功能的一个简单实例。 在程序中创建一个Broker，然后运行，就可以传递消息。
+
+运行流程如下：
+
+（1）启动broker
+
+（2）启动消息提供者
+
+（3）消息消费者订阅消息
+
+在本地程序中创建一个Broker,此时的访问地址为：tcp://localhost:61616
+
+ 
+public class DefineBrokerServer {
+    public static void main(String[] args) {
+        BrokerService brokerService = new BrokerService();
+        try {
+            brokerService.setUseJmx(true);
+            brokerService.addConnector("tcp://localhost:61616");
+            brokerService.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+ 
+    }
+}
+
+启动消息提供者：
+此时broker的连接地址为
+
+ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+
+消息提供者代码实现
+
+ 
+public class JmsSender {
+    public static void main(String[] args) {
+         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+         Connection connection=null;
+        try {
+            connection = connectionFactory.createConnection();
+            connection.start();
+            //Boolean.TRUE时，createSession方法第二个参数不起作用
+            //生成和消费消息的单线程上下文
+            Session session = connection.createSession(Boolean.TRUE, Session.CLIENT_ACKNOWLEDGE);
+            Destination destination = session.createQueue("first-queue1");
+            MessageProducer producer = session.createProducer(destination);
+            for (int i = 0; i < 10; i++) {
+                TextMessage textMessage = session.createTextMessage("hello,菲菲我是帅帅的mic"+i);
+                textMessage.setStringProperty("song","fangyiming");
+                textMessage.setStringProperty("dauger","fangyifei");
+                producer.send(textMessage);
+            }
+            session.commit();
+            session.close();
+ 
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }finally {
+            if (connection!=null) {
+                try {
+                    connection.close();
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+            }
+ 
+        }
+    }
+}
+
+控制台的运行结果为：
+
+hello,菲菲我是帅帅的mic5====>fangyiming
+hello,菲菲我是帅帅的mic6====>fangyiming
+hello,菲菲我是帅帅的mic7====>fangyiming
+hello,菲菲我是帅帅的mic8====>fangyiming
+hello,菲菲我是帅帅的mic9====>fangyiming
+hello,菲菲我是帅帅的mic0====>fangyiming
+hello,菲菲我是帅帅的mic1====>fangyiming
+hello,菲菲我是帅帅的mic2====>fangyiming
+hello,菲菲我是帅帅的mic3====>fangyiming
+hello,菲菲我是帅帅的mic4====>fangyiming
+
+这与常规ActiveMQ安装，处理消息功能一样，只是不需安装ActiveMQ,而是在代码中内嵌实现其功能。
