@@ -1,0 +1,7 @@
+   	
+          @ConfigurationProperties    @value
+功能	  批量注入配置文件中的属性	      一个个指定
+松散绑定	  支持	                      不支持
+SpEl	  不支持	                      支持
+JSR303数据校验	 支持	              不支持
+复杂类型   支持	              不支持
