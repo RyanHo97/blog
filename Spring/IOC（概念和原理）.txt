@@ -1,0 +1,25 @@
+1、什么是IOC
+
+​	（1）控制反转，把对象创建和对象之间的调用过程，交给Spring进行管理。
+
+​	（2）使用IOC目的：为了耦合度降低
+
+​	（3）做入门案例就是IOC实现
+
+2、IOC底层原理
+
+​	（1）xml解析、工厂模式、反射
+
+3、IOC过程
+
+​			·第一步 xml配置文件，配置创建的对象
+
+​			·第二步 有service类和dao类，创建工厂类
+
+​				核心代码：
+
+​						String classValue = class属性值; //1xml解析
+
+​						Class clazz = Class.forName(classValue);//2通过反射创建对象
+
+​						return (UserDao)clazz.newInstance();
