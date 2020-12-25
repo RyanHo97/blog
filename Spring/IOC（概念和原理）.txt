@@ -23,3 +23,23 @@
 ​						Class clazz = Class.forName(classValue);//2通过反射创建对象
 
 ​						return (UserDao)clazz.newInstance();
+4、IOC（接口）
+
+​	（1）IOC思想基于IOC容器完成，IOC容器底层就是对象工厂
+
+​	（2）Spring提供IOC容器实现两种方式：
+
+​			·BeanFactory：IOC容器基本实现，是Spring内部使用的接口，不提供开发人员进行使用
+
+​			*加载配置文件时候不会创建对象，在获取对象（使用）才去创建对象
+
+​			·ApplicationContext：BeanFactory接口的子接口，提供更多强大的功能，一般由开发人员进行使用
+
+​			*加载配置文件时候就会把在配置文件对象进行创建
+
+​	（3）ApplicationContext接口有实现类
+      
+      FileSystemXmlApplicationContext
+      
+      ClassPathXmlApplicationContext
+      
