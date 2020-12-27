@@ -1,0 +1,7 @@
+2、注入属性-外部bean
+
+​		（1）创建两个类service类和dao类
+
+​		（2）在service调用dao里面的方法
+
+​		（3）在spring配置文件中进行配置
