@@ -1,0 +1,20 @@
+今天主要总结一下如何在idea中将自己的项目添加到Git上并且推送到远程仓库?
+首先我们要在idea中查看git的默认安装路径
+选择File>>Settings>>搜索git
+
+这里idea会自动帮你找到你默认安装git的位置
+可以点击Test 查看是否配置正确
+
+ 如果在安装git中修改了安装位置 这边需要手动修改
+接下来我们需要将项目交给git管理
+点击VCS>>Import into Version Control>>找到Create Git Repository
+
+然后在打开的窗口中选中我们当前项目
+
+点击完成之后打开我们本地项目路径就可以看到一个隐藏的.git文件
+
+这时候我们就成功将工程添加到了Git
+这里有一个小细节:
+关于隐藏文件查看方式:点击状态栏 查看>>勾选隐藏的项目
+
+连接远程仓库详见图文：https://www.cnblogs.com/zouhong/p/12598139.html
