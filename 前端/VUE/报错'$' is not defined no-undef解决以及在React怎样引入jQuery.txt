@@ -1,0 +1,18 @@
+使用jQuery时，如果遇到报错：
+
+'$' is not defined  no-undef
+这个报错表示jQuery没引入。没引入又分两个原因，第一，没安装，第二单纯是没引入。
+烦请对号入座。如果是第一条，就从第一步开始，如果是第二个原因，请直接看第二条。
+
+第一步：安装jQuery
+
+npm i jquery -S
+在哪个地方使用jQuery就在哪里引入jQuery
+
+
+import $ from  'jquery'
+
+作者：楠楠_c811
+链接：https://www.jianshu.com/p/b27844bf3b98
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
