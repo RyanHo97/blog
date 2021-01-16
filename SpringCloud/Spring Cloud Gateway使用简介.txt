@@ -1,0 +1,26 @@
+Spring Cloud Gateway是类似Nginx的网关路由代理，有替代原来Spring cloud zuul之意：
+
+Spring 5 推出了自己的Spring Cloud Gateway，支持Java 8、Reactor API，可在Spring Boot 2 使用，看到了响应式组件Reactor，可以理解这个网关方案目标之一是能够采用Reactive 来实现高效率的网关。
+
+想要建立一个Spring Cloud Gateway 的话，在Spring Tool Suite 上可以选择「Gateway」这个Starter，为了能注册到服务发现服务器，也为了能开放gateway/routes 端点，以便观察路由信息，就顺便加入Eureka与Actuator 的Starter，比如在build.gradle 中可以包含：
+
+
+implementation('org.springframework.boot:spring-boot-starter-actuator')  
+implementation('org.springframework.cloud:spring-cloud-starter-gateway')
+implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+
+Spring Cloud Gateway 可以在注册服务器上注册的服务ID，自动建立路由信息，为此，可以如下设定bootstrap.properties：
+server.port=5555
+
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lowerCaseServiceId=true
+
+eureka.instance.preferIpAddress=true
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+management.endpoints.web.exposure.include: gateway
+
+spring.cloud.gateway.discovery.locator.enabled启用了自动根据服务ID建立路由，
+路由的路径对应会使用大写ID，若想要使用小写ID，可将spring.cloud.gateway.discovery.locator.lowerCaseServiceId设为true；
+在设置中也开放了gateway端点。必要时，可以使用RouteLocator实现自定义路由的方式。
+
