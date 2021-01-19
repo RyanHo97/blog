@@ -1,0 +1,8 @@
+pom.xml依赖:
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+    </dependency>
+    
+相比较于Ribbon，Spring Cloud LoadBalancer不仅能够支持RestTemplate，还支持WebClient。
+WeClient是Spring Web Flux中提供的功能，可以实现响应式异步请求，因此学习Spring Cloud LoadBalancer之前，建议先了解下Spring Web Flux。
