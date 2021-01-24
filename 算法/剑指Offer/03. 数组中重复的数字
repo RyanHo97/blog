@@ -1,0 +1,48 @@
+题解 1：
+速度5ms
+
+class Solution {
+    public int findRepeatNumber(int[] nums) {
+        //Hash表
+        Set<Integer> set = new HashSet<Integer>();
+        int res = -1;
+        for(int num : nums)
+            if(!set.add(num))//add失败，返回false 找到了某个重复的元素
+            {
+                res = num;
+                break;
+            }
+            return res;
+            
+    }
+}
+
+题解 2：
+速度1ms
+
+class Solution {
+    public void swap(int[]nums,int i,int j)
+    {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public int findRepeatNumber(int[] nums) {
+        int n = nums.length;
+        //1~n-1
+        for (int num : nums)
+            if(num < 0 || num >n)
+                return -1;
+
+        //利用下标交换 保证下标 == 元素值
+        for(int i = 0;i < n;i++)
+        {
+            while(nums[i]!=i && nums[nums[i]]!=nums[i])
+                swap(nums, i ,nums[i]);//交换nums[i] nums[nums[i]]
+            if(nums[i]!=i && nums[nums[i]] == nums[i])
+                return nums[i];
+        }
+        return -1;
+    }
+}
