@@ -1,0 +1,8 @@
+安装mysql警告 :
+warning: MySQL-server-5.5.48-1.linux2.6.x86_64.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
+
+NOKEY 原因：
+这是由于yum安装了旧版本的GPG keys造成的。从 RPM 版本 4.1 开始，在安装或升级软件包时会检查软件包的签名。
+解决办法：
+后面加上  --force --nodeps
+如：rpm -ivh MySQL-server-5.5.48-1.linux2.6.x86_64.rpm --force --nodeps
