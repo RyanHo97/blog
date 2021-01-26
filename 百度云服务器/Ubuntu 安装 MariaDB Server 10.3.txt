@@ -1,0 +1,70 @@
+概述
+随着 10.3.7 版本的发布，MariaDB 10.3 系列终于走出测试可以进行生产使用了，MariaDB 10.3 是 MariaDB 10.2 的演进版，带来了几个全新功能，并且具有 MySQL 的后端和重新实现的功能。
+
+MariaDB 兼容的依旧还是 MySQL 5.7 并没有带来 8.0 的特性，不过现在 MySQL 8.0 虽然正式了但是由于变动较大很多细节都并不兼容，MariaDB 10.3 盲目的跟进反而越带来不小的影响。
+
+比较大的更新就是两大全新引擎 MyRocks 和 Spider 都进入稳定生产阶段了，MyRocks 有着非常优异的特性：更高的压缩效率、更快的写入效率、更快加载数据和更快的复制性能。Spider存储引擎是具有内置分片功能的存储引擎。它支持分区和xa事务，可以像处理同一个实例上的表一样处理不同MariaDB实例的表。 当然还有引入AliSQL 的新特性。
+
+介绍
+这里我们用 MariaDB 代替 MySQL，MariaDB 数据库管理系统是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可 MariaDB 的目的是完全兼容 MySQL，包括 API 和命令行，使之能轻松成为 MySQL 的代替品。
+
+上面的都是书面语，我觉得 MariaDB 哪里好呢，首先 MySQL 分 CE（开发版）和 EE（企业版）区分了一部分用户，而且毕竟是 Orcale 的软件了，后期发展难免会有更大的区分。MariaDB 是完全由开源社区维护的，而且在功能开发上也更开放，光说国内，阿里云就有为其赞助了一位开发者——彭立勋，帮助完善复制功能并将 AliSQL 的优良特性合并入 MariaDB，最近腾讯云也赞助了一位开发者 —— 程斌（音译），帮助完善InnoDB 功能，并合并 TXSQL。可见 MariaDB 的开发生态其实非常棒，很活跃，一片生机勃勃。
+
+MariaDB、MySQL 这样的数据库编译非常耗时而且编译很容易出错，所以使用编译好的版本无疑是最好的，设置页非常的方便。
+
+安装
+MariaDB 的软件源由官方提供，程序的质量和安全绝对是毋庸置疑的。
+
+本教程适用于：
+
+Ubuntu 14.04 LTS (trusty) 支持安装 5.5～最新
+
+Ubuntu 16.04 LTS (xenial) 支持安装 10.0～最新
+
+Ubuntu 18.04 LTS (bionic) 支持安装 10.1～最新
+
+教程以 10.3 版本为例，其他版本只需将下面的 10.3 修改为 10.2 10.1 10.0 5.5 即可
+
+
+apt install software-properties-common -y
+ 
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+add-apt-repository 'deb [arch=amd64] http://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/10.3/ubuntu bionic main'
+ 
+apt update
+apt install mariadb-server -y
+
+安装过程中，这里会提示设置数据库 Root 密码，需要连续输入两次。
+
+设置
+输入下面的命令，关闭一些不安全的设置：
+
+mysql_secure_installation  
+首先输入密码，提出修改米啊嘛不修改，然后一路 y 即可。 动图演示： 
+
+基本介绍：
+Enter current password for root (enter for none):
+解释：输入当前 root 用户密码，默认为空，直接回车。
+Set root password? [Y/n]  y > > 解释：要设置 root 密码吗？输入 y 表示愿意。
+Remove anonymous users? [Y/n]  y
+解释：要移除掉匿名用户吗？输入 y 表示愿意。
+Disallow root login remotely? [Y/n]  y
+解释：不想让 root 远程登陆吗？输入 y 表示愿意。
+Remove test database and access to it? [Y/n]  y
+解释：要去掉 test 数据库吗？输入 y 表示愿意。
+Reload privilege tables now? [Y/n]  y
+解释：想要重新加载权限吗？输入 y 表示愿意。
+
+管理
+systemctl restart mysql #重启
+systemctl start mysql #启动
+systemctl stop mysql #关闭
+systemctl status mysql #检查状态
+更新
+运行下面的命令系统就会更新所有可以更新的软件包括 MariaDB
+
+apt update
+apt upgrade -y
+
+
+文章来自：https://blog.juncdt.com/446/
