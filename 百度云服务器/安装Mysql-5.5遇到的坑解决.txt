@@ -6,3 +6,34 @@ NOKEY 原因：
 解决办法：
 后面加上  --force --nodeps
 如：rpm -ivh MySQL-server-5.5.48-1.linux2.6.x86_64.rpm --force --nodeps
+
+
+安装成功：
+root@instance-vlq0ju87:/opt/mysql5# rpm -ivh MySQL-server-5.5.48-1.linux2.6.x86_64.rpm --force --nodeps
+rpm: RPM should not be used directly install RPM packages, use Alien instead!
+rpm: However assuming you know what you are doing...
+warning: MySQL-server-5.5.48-1.linux2.6.x86_64.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:MySQL-server-5.5.48-1.linux2.6   ################################# [100%]
+usermod: no changes
+210126 17:23:42 [Note] /usr/sbin/mysqld (mysqld 5.5.48) starting as process 873285 ...
+210126 17:23:42 [Note] /usr/sbin/mysqld (mysqld 5.5.48) starting as process 873291 ...
+
+PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !
+To do so, start the server, then issue the following commands:
+
+/usr/bin/mysqladmin -u root password 'new-password'
+/usr/bin/mysqladmin -u root -h instance-vlq0ju87 password 'new-password'
+
+Alternatively you can run:
+/usr/bin/mysql_secure_installation
+
+which will also give you the option of removing the test
+databases and anonymous user created by default.  This is
+strongly recommended for production servers.
+
+See the manual for more instructions.
+
+Please report any problems at http://bugs.mysql.com/
