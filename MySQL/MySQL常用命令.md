@@ -721,5 +721,459 @@ SELECT IF(10<5,'大','小');
 SELECT last_name,commission_pct,IF(commission_pct IS NULL,'没奖金，呵呵','有奖金，嘻嘻') 备注
 FROM employees;
 
+#流程控制函数
+#1.if函数： if else 的效果
+
+SELECT IF(10<5,'大','小');
+
+SELECT last_name,commission_pct,IF(commission_pct IS NULL,'没奖金，呵呵','有奖金，嘻嘻') 备注
+FROM employees;
+
+
+
+#case函数的使用一：switch case 的效果
+
+/*
+
+switch(变量或表达式){
+		case 常量1： 语句1;break;
+		...
+		default:语句n;break;
+}
+
+mysql中
+
+case
+ 要判断的字段或表达式
+when 常量1 then 要显示的值1或语句1;
+when 常量2 then 要显示的值2或语句2;
+...
+else 要显示的值n或语句n；
+end
+*/
+
+/*案例：查询员工的工资，要求
+
+部门号=30， 显示的工资为1.1倍
+部门号=40， 显示的工资为1.2倍
+部门号=50， 显示的工资为1.3倍
+其他部门，显示的工资为原工资
+
+*/
+
+SELECT salary 原始工资,department_id,
+CASE department_id
+WHEN 30 THEN salary*1.1
+WHEN 40 THEN salary*1.2
+WHEN 50 THEN salary*1.3
+ELSE salary
+END AS 新工资
+FROM employees;
+
+
+
+#case函数的使用二：类似于 多重if
+/*
+java中：
+if(条件1){
+			语句1;
+}else if(条件2){
+			语句2;
+}
+...
+else{
+			语句n;
+}
+
+mysql中：
+
+case
+when 条件1 then 要显示的值1或语句1
+when 条件2 then 要显示的值2或语句2
+...
+else 要显示的值n或语句n
+end
+*/
+
+#案例：查询员工的工资的情况
+/*
+如果工资>20000,显示A级别
+如果工资>15000,显示B级别
+如果工资>10000,显示C级别
+否则，显示D级别
+
+*/
+SELECT salary,
+CASE
+WHEN salary>20000 THEN 'A'
+WHEN salary>15000 THEN 'B'
+WHEN salary>10000 THEN 'C'
+ELSE 'D'
+END AS 工资级别
+FROM employees;
+
+
+
+案例讲解
+
+#1.	显示系统时间(注： 日期+时间)
+
+SELECT NOW();
+
+#2.	查询员工号，姓名，工资，以及工资提高20%后的结果（new salary）
+
+SELECT employee_id,last_name,salary*1.2 "new salary"
+FROM employees;
+
+#3. 将员工的姓名按首字母排序，并写出姓名的长度（length）
+
+SELECT	LENGTH(last_name) 长度,SUBSTR(last_name,1,1) 首字符,last_name
+FROM employees
+ORDER BY 首字符;
+
+#4. 做一个查询，产生下面的结果
+/*
+<last_name> earns <salary> monthly but wants <salary*3>
+Deram Salary
+King earns 24000 monthly but wants 72000
+
+*/
+
+SELECT CONCAT(last_name,' earn ',salary,' monthly but wants ',salary*3) AS "Dream Salary"
+FROM employees
+WHERE salary=24000;
+
+#5. 使用case-when,按照下面的条件：
+/*
+job    grade
+AD_PRES  A
+ST_MAN   B
+IT_PROG  C
+SA_REP   D
+ST_CLERK E
+
+*/
+
+SELECT last_name,job_id AS job,
+CASE job_id
+WHEN 'AD_PRES' THEN 'A'
+WHEN 'ST_MAN' THEN 'B'
+WHEN 'IT_PROG' THEN 'C'
+WHEN 'SA_REP' THEN 'D'
+WHEN 'ST_CLERK' THEN 'F'
+END AS Grade
+FROM employees
+WHERE job_id = 'AD_PRES';
+
+
+
+#### 分组函数
+
+##### 分组函数
+
+#二、分组函数
+/*
+功能：用作统计使用，又称为聚合函数或统计函数或组函数
+
+分类：
+sum 求和、avg 平均值、max 最大值、min 最小值、count 计算个数
+
+特点：
+1、sum、avg一般用于处理数值型
+   max、min、count可以处理任何类型
+2、以上分组函数都忽略null值
+3、和distinct搭配，实现去重
+4、count函数的单独介绍
+一般使用count(*)用作统计行数
+5、和分组函数一同查询的字段要求是group by后的字段
+
+*/
+
+#1、简单 的使用
+SELECT SUM(salary) FROM employees;
+SELECT AVG(salary) FROM employees;
+SELECT MIN(salary) FROM employees;
+SELECT MAX(salary) FROM employees;
+SELECT COUNT(salary) FROM employees;
+
+SELECT SUM(salary) 和,AVG(salary) 平均,MAX(salary) 最高,MIN(salary) 最低,COUNT(salary) 个数
+FROM employees;
+
+SELECT SUM(salary) 和,ROUND(AVG(salary),2) 平均,MAX(salary) 最高,MIN(salary) 最低,COUNT(salary) 个数
+FROM employees;
+
+#2、参数支持哪些类型
+
+SELECT SUM(last_name),AVG(last_name) FROM employees;
+SELECT SUM(hiredate),AVG(last_name) FROM employees;
+
+SELECT MAX(last_name),MIN(last_name) FROM employees;
+SELECT MAX(hiredate),MIN(hiredate) FROM employees;
+
+SELECT COUNT(last_name) FROM employees;
+SELECT COUNT(commission_pct) from employees;
+
+
+
+#3、是否忽略null
+
+SELECT SUM(commission_pct),AVG(commission_pct),SUM(commission_pct)/35,SUM(commission_pct)/107 FROM employees;
+
+SELECT MAX(commission_pct),MIN(commission_pct) FROM employees;
+
+SELECT COUNT(commission_pct) FROM employees;
+
+
+
+#4、和distinct搭配
+
+SELECT SUM(DISTINCT salary),SUM(salary) FROM employees;
+
+SELECT COUNT(DISTINCT salary),COUNT(salary) FROM employees;
+
+#5、count函数的详细介绍
+
+SELECT COUNT(salary) FROM employees;
+
+SELECT COUNT(*) FROM employees;
+
+SELECT COUNT(1) FROM employees;
+
+#效率：
+#MYISAM存储引擎下，COUNT(*)的效率高
+#INNODB存储引擎下，COUNT(*)和COUNT(1)的效率差不多，比COUNT(字段)要高一些
+
+#6、和分组函数一同查询的字段有限制
+
+#虽然没有报错，但是employee_id值无意义。
+
+SELECT AVG(salary),employee_id FROM employees;
+
+
+
+#测试
+
+#1.查询公司员工工资的最大值，最小值，平均值，总和
+
+SELECT MAX(salary) mx_sal,MIN(salary) mi_sal,ROUND(AVG(salary),2) ag_sal,SUM(salary) sm_sal
+FROM employees;
+
+#2.查询员工表中的最大入职时间和最小入职时间的相差天数 （DIFFRENCE）
+
+#MAX(hiredate) MIN(hiredate)
+
+SELECT DATEDIFF(MAX(hiredate),MIN(hiredate)) DIFFRENCE
+FROM employees;
+
+#查看自己活了多少天了
+SELECT DATEDIFF(NOW(),'1995-1-1');
+
+#3.查询部门编号为90的员工个数
+SELECT COUNT(*) 个数
+FROM employees
+WHERE department_id = 90;
+
+
+
+##### 分组查询
+
+#进阶5：分组查询
+/*
+分组数据：GROUP BY 子句语法
+语法：
+				select 分组函数,列（要求出现在group by的后面）
+				from 表
+				【where 筛选条件】
+				group by 分组的列表
+				【order by 子句】
+注意：
+				查询列表比较特殊，要求是分组函数和group by后出现的字段
+
+
+
+特点：
+
+​			1、分组查询中的筛选条件分为两类
+
+|            | 数据源         | 位置               | 关键字 |
+| ---------- | -------------- | ------------------ | ------ |
+| 分组前筛选 | 原始表         | group by子句的前面 | where  |
+| 分组后筛选 | 分组后的结果集 | group by子句的后面 | having |
+
+​	①分组函数做条件肯定是放在having子句中
+
+​	②能用分组前筛选的，就优先考虑使用分组前筛选
+
+​			2、group by子句支持单个字段分组，多个字段分组（多个字段之间用逗号隔开没有顺序要求），表达式函数（用的较少）
+
+​			3、也可以添加排序（排序放在整个分组查询的最后）
+
+
+
+*/
+
+#引入：查询每个部门的平均工资
+SELECT AVG(salary) FROM employees;
+
+#简单的分组查询
+#案例1：查询每个工种的最高工资
+SELECT MAX(salary),job_id
+FROM employees
+GROUP BY job_id;
+
+#案例2：查询每个位置上的部门个数
+SELECT COUNT(*),location_id
+FROM departments
+GROUP BY location_id;
+
+
+
+#添加分组前的筛选条件
+#案例1：拆线呢邮箱中包含a字符的，每个部门的平均工资
+
+SELECT AVG(salary),department_id
+FROM employees
+WHERE email LIKE '%a%'
+GROUP BY department_id;
+
+#案例2：查询有奖金的每个领导手下员工的最高工资
+
+SELECT last_name,MAX(salary),manager_id
+FROM employees
+WHERE commission_pct IS NOT NULL
+GROUP BY manager_id;
+
+
+
+#添加分组后的筛选条件
+
+#案例1：查询哪个部门的员工个数>2
+
+#①查询每个部门的员工个数
+SELECT COUNT(*),department_id
+FROM employees
+GROUP BY department_id;
+
+#②根据①的结果进行筛选，查询哪个部门的员工个数>2
+
+SELECT COUNT(*),department_id
+FROM employees
+GROUP BY department_id
+HAVING COUNT(*)>2;
+
+#案例2：查询每个工种有奖金的员工的最高工资>12000的工种编号和最高工资
+
+#①查询每个工种有奖金的员工的最高工资
+
+SELECT MAX(salary),job_id
+FROM employees
+WHERE commission_pct IS NOT NULL
+GROUP BY job_id;
+
+#②根据①结果继续筛选，最高工资>12000
+
+SELECT MAX(salary),job_id
+FROM employees
+WHERE commission_pct IS NOT NULL
+GROUP BY job_id
+HAVING MAX(salary)>12000;
+
+#案例3：查询领导编号>102的每个领导手下的最低工资>5000的领导编号是哪个，以及其最低工资
+
+#①查询每个领导手下的员工固定最低工资
+
+SELECT MIN(salary),manager_id
+FROM employees
+GROUP BY manager_id
+
+#②添加筛选条件：编号>102
+
+SELECT MIN(salary),manager_id
+FROM employees
+WHERE manager_id>102
+GROUP BY manager_id;
+
+#③添加筛选条件：最低工资>5000
+SELECT MIN(salary),manager_id
+FROM employees
+WHERE manager_id>102
+GROUP BY manager_id
+HAVING MIN(salary)>5000;
+
+
+
+#按表达式或函数分组
+
+#案例：按员工姓名的长度分组，查询每一组的员工个数，筛选员工个数>5的有哪些
+
+#①查询每个长度的员工个数
+
+SELECT COUNT(*),LENGTH(last_name) len_name
+FROM employees
+GROUP BY LENGTH(last_name);
+
+#②添加筛选条件
+SELECT COUNT(*) c,LENGTH(last_name) len_name
+FROM employees
+GROUP BY len_name
+HAVING c>5;
+
+#按多个字段分组
+
+#案例：查询每个部门每个工种的员工的平均工资
+
+SELECT AVG(salary),department_id,job_id
+FROM employees
+GROUP BY job_id,department_id;
+
+#添加排序
+#案例：查询每个部门每个工种的员工的平均工资，并且按平均工资的高低显示
+
+SELECT AVG(salary),department_id,job_id
+FROM employees
+WHERE department_id IS NOT NULL
+GROUP BY job_id,department_id
+HAVING AVG(salary)>10000
+
+ORDER BY AVG(salary) DESC;
+
+
+
+案例讲解：
+
+#1.查询个job_id的员工工资的最大值，最小值，平均值，总和并按job_id升序
+
+SELECT MAX(salary),MIN(salary),AVG(salary),SUM(salary),job_id
+FROM employees
+GROUP BY job_id
+ORDER BY job_id;
+
+#2.查询员工最高工资和最低工资的差距（DIFFRENCE）
+SELECT MAX(salary)-MIN(salary) DIFFRENCE
+FROM employees;
+
+#3.查询各个管理者手下员工的最低工资，其中最低工资不能低于6000，没有管理者的员工不计算在内
+SELECT MIN(salary),manager_id
+FROM employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING MIN(salary)>=6000;
+
+#4.查询所有部门的编号，员工数量和工资平均值，并按平均工资降序
+SELECT department_id,COUNT(*),AVG(salary) a
+FROM employees
+GROUP BY department_id
+ORDER BY a DESC;
+
+#5.选择具有各个job_id的员工人数
+SELECT COUNT(*) 个数,job_id
+FROM employees
+GROUP BY job_id;
+
+
+
+
+
+##### 连接查询
 
 
