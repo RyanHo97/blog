@@ -1884,3 +1884,30 @@ WHERE salary<(
 
 
 
+#二、select后面
+/*
+仅仅支持标量子查询
+*/
+
+#案例1：查询每个部门的员工个数
+
+SELECT d.*,(
+
+			SELECT COUNT(*)
+			FROM employees e
+			WHERE e.department_id=d.department_id
+
+) 个数
+FROM departments d;
+
+#案例2：查询员工号=102的部门名
+
+SELECT (
+
+	SELECT department_name
+	FROM departments d
+	INNER JOIN employees e
+	ON d.department_id=e.department_id
+	WHERE e.employee_id=102
+
+) 部门名;
