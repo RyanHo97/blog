@@ -234,7 +234,7 @@ File -> Project Structure -> Modules -> 选中要添加build path的项目 -> De
 
 创建xml文件
 
-mybatis-config.xml
+mybatis-config.xml（仅为模板）
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -258,6 +258,36 @@ mybatis-config.xml
   </mappers>
 </configuration>
 ```
+
+
+
+mybatis-config.xml有些变化：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf8&amp;connectTimeout=1000&amp;ampsocketTimeout=3000&amp;autoReconnect=true&amp;serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="password"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
+
 
 
 
@@ -315,7 +345,7 @@ public class MybatisTest {
         //执行sql要用的参数：
         SqlSession openSession = sqlSessionFactory.openSession();
         try {
-            Employee employee = openSession.selectOne("org.mybatis.example.BlogMapper.selectEmp", 1);
+            Employee employee = openSession.selectOne("com.atguigu.mybatis.EmployeeMapper.selectEmp", 1);
             System.out.println(employee);
         }finally {
             openSession.close();
@@ -327,7 +357,33 @@ public class MybatisTest {
 
 
 
+EmployeeMapper.xml示例代码：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.EmployeeMapper">
+    <!--
+    namespace:名称空间
+    id：唯一标识
+    resultType：返回值类型
+    #{id}:从传递过来的参数中取出id值
+    -->
+    <select id="selectEmp" resultType="com.atguigu.mybatis.bean.Employee">
+        select id,last_name lastname,email,gender from tbl_employee where id = #{id}
+    </select>
+</mapper>
+```
+
+
+
+
+
 #### 5.接口式编程
+
+接口可以与配置文件进行动态绑定
 
 创建EmployeeMapper接口：
 
@@ -346,4 +402,167 @@ public interface EmployeeMapper {
 
 
 在对应的mapper.xml中的namespace指定为接口的全类名
+
+ 
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+    <!--
+    namespace:名称空间；接口的全类名
+    id：唯一标识
+    resultType：返回值类型
+    #{id}:从传递过来的参数中取出id值
+
+    public Employee getEmpById(Integer id);
+    -->
+    <select id="getEmpById" resultType="com.atguigu.mybatis.bean.Employee">
+        select id,last_name lastname,email,gender from tbl_employee where id = #{id}
+    </select>
+</mapper>
+```
+
+
+
+MybatisTest测试类的示例代码：
+
+test01
+
+```java
+package com.atguigu.mybatis.test;
+
+
+import com.atguigu.mybatis.bean.Employee;
+import com.atguigu.mybatis.dao.EmployeeMapper;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Test;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class MybatisTest {
+    public SqlSessionFactory getSqlSessionFactory() throws IOException{
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        return new SqlSessionFactoryBuilder().build(inputStream);
+    }
+
+    /*
+        1.根据xml配置文件（全局配置文件）创建一个SqlSessionFactory对象
+            有数据源一些运行环境信息
+        2.sql映射文件；配置了每一个sql，以及sql的封装规则等；
+        3.将sql映射文件注册在全局配置文件中
+        4.写代码：
+            1）、根据全局配置文件得到SqlSessionFactory；
+            2）、使用SqlSession工厂，获取到sqlSession对象使用他来执行增删改查
+                 一个SqlSession就是代表和数据库的一次会话，用完关闭
+            3）、使用sql的唯一标识来告诉Mybatis执行哪个sql。sql都是保存在sql映射文件中的。
+
+     */
+
+    /*
+    @Test
+    public void test() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2、获取sqlSession实例，能直接执行已经映射的sql语句
+        //sql的唯一标识：
+        //执行sql要用的参数：
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            Employee employee = openSession.selectOne("com.atguigu.mybatis.EmployeeMapper.selectEmp", 1);
+            System.out.println(employee);
+        }finally {
+            openSession.close();
+        }
+    }
+    */
+
+    @Test
+    public void test01() throws IOException {
+        //1.获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+
+        //2.获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession();
+
+        try {
+            //3.获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查的方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+
+            Employee employee = mapper.getEmpById(1);
+
+            System.out.println(mapper.getClass()); //代理对象$Proxy4
+            System.out.println(employee);
+        }finally {
+            openSession.close();
+        }
+    }
+
+
+}
+
+```
+
+接口定义好了，是不是还要再定义一个实现类呢？答案是否定的。Mybatis会使用动态代理机制来帮助我们完成额外的工作，我们需要做的就是把这个接口注册到Mybatis中。在Mybatis的总配置文件中，加入如下语句。
+
+
+
+#### 6.小结
+
+1、接口式编程
+
+​	原生： Dao  ====>DaoImpl
+
+​	mybatis: Mapper ====>xxMapper.xml
+
+2、SqlSession代表和数据的一次会话；用完必须关闭
+
+3、SqlSession和connection一样它都是非线程安全。每次使用都应该去获取新的对象。
+
+​	private SqlSession sqlSession；//错误，有可能造成资源的竞争。
+
+4、mapper接口没有实现类，但是mybatis会为这个接口生成一个代理对象。
+
+​		(将接口和xml进行绑定)
+
+​		EmployeeMapper emp Mapper = sqlSession.getMapper(EmployeeMapper.class);
+
+5、两个重要的配置文件；
+
+​		mybatis的全局配置文件：包含数据库连接池信息，事务管理器信息...系统运行环境信息
+
+​		sql映射文件：保存了每一个sql语句的映射信息：
+
+​								将sql抽取出来。
+
+```xml
+    <select id="getEmpById" resultType="com.atguigu.mybatis.bean.Employee">
+        select id,last_name lastname,email,gender from tbl_employee where id = #{id}
+    </select>
+```
+
+
+
+
+
+### 二、Mybatis-全局配置文件
+
+#### 1.引入dtd约束
+
+约束文件位置：
+
+mybatis-3.4.1.jar -> org.apache.ibatis ->builder ->xml ->mybatis-3-config.dtd
+
+mybatis-3.4.1.jar -> org.apache.ibatis ->builder ->xml ->mybatis-3-mapper.dtd
 
