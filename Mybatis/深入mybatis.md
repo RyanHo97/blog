@@ -1028,3 +1028,115 @@ public class Employee {
 ```
 
 对应mapper.xml： 需要将返回值类型改回类名resultType="emp"
+
+
+##### typeHandlers标签
+
+类型处理器（typeHandlers）
+
+MyBatis 在设置预处理语句（PreparedStatement）中的参数或从结果集中取出一个值时， 都会用类型处理器将获取到的值以合适的方式转换成 Java 类型。
+
+作为一个java类型与JDBC类型的桥梁
+
+**提示** 从 3.4.5 开始，MyBatis 默认支持 JSR-310（日期和时间 API） 。
+
+一部分类型处理器：
+
+| 类型处理器              | Java 类型                      | JDBC 类型                            |
+| :---------------------- | :----------------------------- | :----------------------------------- |
+| `BooleanTypeHandler`    | `java.lang.Boolean`, `boolean` | 数据库兼容的 `BOOLEAN`               |
+| `ByteTypeHandler`       | `java.lang.Byte`, `byte`       | 数据库兼容的 `NUMERIC` 或 `BYTE`     |
+| `ShortTypeHandler`      | `java.lang.Short`, `short`     | 数据库兼容的 `NUMERIC` 或 `SMALLINT` |
+| `IntegerTypeHandler`    | `java.lang.Integer`, `int`     | 数据库兼容的 `NUMERIC` 或 `INTEGER`  |
+| `LongTypeHandler`       | `java.lang.Long`, `long`       | 数据库兼容的 `NUMERIC` 或 `BIGINT`   |
+| `FloatTypeHandler`      | `java.lang.Float`, `float`     | 数据库兼容的 `NUMERIC` 或 `FLOAT`    |
+| `DoubleTypeHandler`     | `java.lang.Double`, `double`   | 数据库兼容的 `NUMERIC` 或 `DOUBLE`   |
+| `BigDecimalTypeHandler` | `java.math.BigDecimal`         | 数据库兼容的 `NUMERIC` 或 `DECIMAL`  |
+| `StringTypeHandler`     | `java.lang.String`             | `CHAR`, `VARCHAR`                    |
+
+
+
+
+
+##### plugins标签
+
+MyBatis 允许你在映射语句执行过程中的某一点进行拦截调用
+
+默认情况下，MyBatis 允许使用插件来拦截的方法调用包括：
+
+四大对象
+
+- Executor：执行器 (update, query, flushStatements, commit, rollback, getTransaction, close, isClosed)
+- ParameterHandler：参数处理器 (getParameterObject, setParameters)
+- ResultSetHandler：结果集处理器(handleResultSets, handleOutputParameters)
+- StatementHandler：执行语句处理器(prepare, parameterize, batch, update, query)
+
+
+
+
+
+##### environments标签
+
+环境配置
+
+MyBatis 可以配置成适应多种环境，这种机制有助于将 SQL 映射应用于多种数据库之中， 现实情况下有多种理由需要这么做。例如，开发、测试和生产环境需要有不同的配置；或者想在具有相同 Schema 的多个生产数据库中使用相同的 SQL 映射。还有许多类似的使用场景。
+
+代码示例：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="dbconfig.properties"></properties>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+
+        <package name="com.atguigu.mybatis.bean"></package>
+
+    </typeAliases>
+
+
+    <!--4、environments:环境们，mybatis可以配置多种环境，default指定使用某种环境。可以达到快速切换环境。
+            environment：配置一个具体的环境信息；必须有两个标签；id代表当前环境的唯一标识
+                transactionManager：事务管理器；
+                       type:事务管理器的类型；JDBC(JdbcTransactionFactory)|MANAGED(ManagedTransactionFactory)
+                            自定义事务管理器：实现TransactionFactory接口，type指定为全类名
+                dataSource：数据源；
+                       type：数据源类型；UNPOOLED|POOLED|JNDI
+                             
+                             自定义数据源：实现DataSourceFactory接口，type是全类名
+    -->
+    <environments default="development">
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
