@@ -566,3 +566,465 @@ mybatis-3.4.1.jar -> org.apache.ibatis ->builder ->xml ->mybatis-3-config.dtd
 
 mybatis-3.4.1.jar -> org.apache.ibatis ->builder ->xml ->mybatis-3-mapper.dtd
 
+
+
+视频的环境为eclipse，在这块有细微区别，解决方法都会写，约定每次出现intellij idea即为解决方案
+
+·Intellij idea
+
+IDEA对于mybatis.xml文件没有自动提示功能
+
+1.导入方式，file->setting 或者setting for new project
+
+2.languages&frameworks->schemas and dtds
+
+3.在右侧上面的窗口点击添加，如图，添加两个dtd文件，前面的内容是头文件的内容：
+
+ http://mybatis.org/dtd/mybatis-3-config.dtd
+ http://mybatis.org/dtd/mybatis-3-mapper.dtd
+
+浏览器打开该链接可下载两个文件，也可通过视频中解压jar包方式，位置在上面
+
+后面的内容是存放这两个文件的本地存储的地址
+
+4.完成后输入<后按住alt+/就会有提示。
+
+
+
+#### 2.引入外部配置文件
+
+·intellij idea复制项目：
+
+与eclipse不同，直接复制文件夹的方式会使复制导入失败。解决方案：
+
+1、复制一个项目，并改名字
+
+2、更改.iml文件名字，改成与项目名一致
+
+3、将以下文件中的原有名字，替换成更改后的名字
+
+.idea/modules.xml
+
+.idea/workspace.xml
+
+4、将out文件夹删除
+
+5、然后用IDEA打开项目，打开File->project Structure，检查project名字和modules名字。
+
+
+
+⭐引入外部配置文件
+
+作用：可以把jdbc连接池的配置提取出来
+
+
+
+dbconfig.properties：
+
+注：因为使用的是MySQL8.0，所以在jdbc.url配置项后增加了时区配置，不然报错。
+
+```file
+jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=UTC
+jdbc.username=root
+jdbc.password=password
+```
+
+
+
+mybatis-config.xml：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        1、mybatis可以使用properties来引入外部properties配置文件的内容
+        resource:引入类路径下的资源
+        url:引入网络路径或者磁盘路径下的资源
+
+		这里使用的是类路径的方式
+    -->
+    <properties resource="dbconfig.properties"></properties>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--将value改成${}的配置方式-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
+
+
+运行MybatisTest.java测试成功：
+
+class com.sun.proxy.$Proxy4
+Employee{id=1, lastname='tom', email='tom@atguigu', gender='0'}
+
+
+
+#### 3.运行时行为设置
+
+##### settings标签
+
+中文文档地址：https://mybatis.org/mybatis-3/zh/configuration.html
+
+settings
+
+| 设置名                   | 描述                                                         | 有效值        | 默认值 |
+| :----------------------- | :----------------------------------------------------------- | :------------ | :----- |
+| mapUnderscoreToCamelCase | 是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn。 | true \| false | False  |
+
+
+
+mybatis-config.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        1、mybatis可以使用properties来引入外部properties配置文件的内容
+        resource:引入类路径下的资源
+        url:引入网络路径或者磁盘路径下的资源
+    -->
+    <properties resource="dbconfig.properties"></properties>
+
+
+    <!--
+        2、settings包含很多重要的设置项
+        setting：用来设置每一个设置项
+            name：设置项名
+            value：设置项取值
+
+    -->
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
+
+
+##### typeAliases标签
+
+typeAliases别名处理器
+
+查询结果的返回值每次都写全类名很麻烦
+
+可以起别名
+
+
+
+1.默认全类名是转换成小写的类名
+
+mybatis-config.xml代码示例：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    
+    <properties resource="dbconfig.properties"></properties>
+
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 3、typeAliases:别名处理器：可以为我们的java类型起别名-->
+    <typeAliases>
+        <!-- typeAlias:为某个java类型起别名
+                type：指定要起别名的类型全类名；默认别名就是类名小写；employee
+                alias：指定新的别名
+        -->
+        <typeAlias type="com.atguigu.mybatis.bean.Employee" />
+    </typeAliases>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
+
+
+
+
+对应mapper.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+    
+   <!--把返回值的全类名改成小写employee-->
+    <select id="getEmpById" resultType="employee">
+        select *
+        from tbl_employee where id = #{id}
+    </select>
+</mapper>
+```
+
+
+
+2.可以增加alias=“”指定新的别名
+
+mybatis-config.xml代码示例：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="dbconfig.properties"></properties>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 3、typeAliases:别名处理器：可以为我们的java类型起别名-->
+    <typeAliases>
+        <!-- typeAlias:为某个java类型起别名
+                type：指定要起别名的类型全类名；默认别名就是类名小写；employee
+                alias：指定新的别名
+        -->
+        <typeAlias type="com.atguigu.mybatis.bean.Employee" alias="emp"/>
+    </typeAliases>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
+
+
+对应mapper.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+    <!--
+		这里使用了新别名"emp".
+    -->
+    <select id="getEmpById" resultType="emp">
+        select *
+        from tbl_employee where id = #{id}
+    </select>
+</mapper>
+```
+
+
+
+3.也可以指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean，比如：
+
+package:为某个包下的所有类批量起别名，缺点是如果子包下有同名类，则会把所有同名类都起相同别名          
+
+​		name：指定包名（为当前包以及下面所有的后代包的每一个类都起一个默认别名（类名小写），）
+
+```xml
+<typeAliases>
+  <package name="domain.blog"/>
+</typeAliases>
+```
+
+
+
+mybatis-config.xml示例代码：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="dbconfig.properties"></properties>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 3、typeAliases:别名处理器：可以为我们的java类型起别名
+            别名不区分大小写
+     -->
+    <typeAliases>
+        <!-- typeAlias:为某个java类型起别名
+                type：指定要起别名的类型全类名；默认别名就是类名小写；employee
+                alias：指定新的别名
+
+        <typeAlias type="com.atguigu.mybatis.bean.Employee" alias="emp"/>
+        -->
+
+        <!-- package:为某个包下的所有类批量起别名
+                name：指定包名（为当前包以及下面所有的后代包的每一个类都起一个默认别名（类名小写），）
+        -->
+
+        <package name="com.atguigu.mybatis.bean"></package>
+    </typeAliases>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <mappers>
+        <mapper resource="EmployeeMapper.xml"/>
+    </mappers>
+</configuration>
+```
+
+
+
+对应mapper.xml： 需要将返回值类型改回类名resultType="employee"
+
+
+
+4.@Alias注解
+
+批量起别名的情况下，使用@Alias注解为某个类型指定新的别名
+
+
+
+bean.Employee
+
+```java
+package com.atguigu.mybatis.bean;
+
+import org.apache.ibatis.type.Alias;
+
+@Alias("emp")
+public class Employee {
+
+    private Integer id;
+    private String lastname;
+    private String email;
+    private String gender;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
+}
+
+```
+
+对应mapper.xml： 需要将返回值类型改回类名resultType="emp"
