@@ -1140,3 +1140,13 @@ MyBatis 可以配置成适应多种环境，这种机制有助于将 SQL 映射�
 </configuration>
 ```
 
+##### databaseIdProvider标签
+
+数据库厂商标识（databaseIdProvider）
+
+MyBatis 可以根据不同的数据库厂商执行不同的语句，这种多厂商的支持是基于映射语句中的 `databaseId` 属性。 MyBatis 会加载带有匹配当前数据库 `databaseId` 属性和所有不带 `databaseId` 属性的语句。 如果同时找到带有 `databaseId` 和不带 `databaseId` 的相同语句，则后者会被舍弃。 为支持多厂商特性，只要像下面这样在 mybatis-config.xml 文件中加入 `databaseIdProvider` 即可：
+
+```xml
+<databaseIdProvider type="DB_VENDOR" />
+```
+
