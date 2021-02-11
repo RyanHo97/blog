@@ -1150,3 +1150,34 @@ MyBatis 可以根据不同的数据库厂商执行不同的语句，这种多厂
 <databaseIdProvider type="DB_VENDOR" />
 ```
 
+
+Oracle数据库未安装，略过。
+
+这里只展示mysql的部分示例：
+
+mybatis-config.xml
+
+```xml
+    <!-- 5、databaseIdProvider：支持多数据库厂商的
+         type="DB_VENDOR"：VendorDatabaseIdProvider
+                作用就是得到数据库厂商的标识（驱动getDatabaseProductName()），mybatis就能根据数据库厂商标识来执行不同的sql
+                MySQL、Oracle、SQL Server、xxxx
+    -->
+
+    <databaseIdProvider type="DB_VENDOR">
+        <!-- 为不同的数据库厂商起别名-->
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+        <property name="SQL Server" value="sqlserver"/>
+    </databaseIdProvider>
+```
+
+EmployeeMapper.xml
+
+```xml
+    <!-- databaseId指定不同厂商的数据库 -->
+    <select id="getEmpById" resultType="emp" databaseId="mysql">
+        select * from tbl_employee where id = #{id}
+    </select>
+```
+
