@@ -1183,4 +1183,81 @@ EmployeeMapper.xml
 
 ##### mappers标签
 
-既然 MyBatis 的行为已经由上述元素配置完了，我们现在就要来定义 SQL 映射语句了。 但首先，我们需要告诉 MyBatis 到哪里去找到这些语句。 在自动查找资源方面，Java 并没有提供一个很好的解决方案，所以最好的办法是直接告诉 MyBatis 到哪里去找映射文件。 你可以使用相对于类路径的资源引用，或完全限定资源定位符（包括 file:/// 形式的 URL），或类名和包名等。例如：
+既然 MyBatis 的行为已经由上述元素配置完了，我们现在就要来定义 SQL 映射语句了。 但首先，我们需要告诉 MyBatis 到哪里去找到这些语句。 在自动查找资源方面，Java 并没有提供一个很好的解决方案，所以最好的办法是直接告诉 MyBatis 到哪里去找映射文件。 你可以使用相对于类路径的资源引用，或完全限定资源定位符（包括 file:/// 形式的 URL），或类名和包名等。
+
+
+
+代码示例：
+
+```xml
+    <!--  将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件中-->
+    <!--  6、mappers：将sql映射注册到全局配置中  -->
+
+    <mappers>
+        <!--
+            mapper：注册一个sql映射
+                resource：引用类路径下的sql映射文件
+                    mybatis/mapper/EmployeeMapper.xml
+                url：引用网络路径或者磁盘路径下的sql映射文件
+                    file：///var/mappers/EmployeeMapper.xml
+
+                注册接口
+                class:引用（注册）接口，
+                    1、有sql映射文件，映射文件名必须和接口同名，并且放在与接口同一目录下；
+                    2、没有sql映射文件，所有的sql都是利用注解写在接口上；
+                    推荐：比较重要的Dao接口我们来写sql映射文件
+                          不重要，简单的Dao接口为了开发快速可以使用注解；
+        -->
+
+        <!--<mapper resource="mybatis/mapper/EmployeeMapper.xml"/>-->
+        <!--<mapper class="com.atguigu.mybatis.dao.EmployeeMapperAnnotation"/>-->
+
+        <!--  批量注册：-->
+        <!--  package
+                    注意：同样和用注解一样，需要映射文件名必须和接口同名，并且放在与接口同一目录下，解决方法是在conf文件夹下
+                          创建com.atguigu.mybatis.dao同名路径，最后在编译时类路径会合并一起。
+        -->
+        <package name="com.atguigu.mybatis.dao"/>
+
+    </mappers>
+```
+
+
+
+EmployeeMapperAnnotation.java:
+
+```java
+package com.atguigu.mybatis.dao;
+
+import com.atguigu.mybatis.bean.Employee;
+import org.apache.ibatis.annotations.Select;
+
+public interface EmployeeMapperAnnotation {
+    @Select("select * from tbl_employee where id=#{id}")
+    public Employee getEmpById(Integer id);
+}
+
+```
+
+
+
+MybatisTest.java测试方法：
+
+```java
+    @Test
+    public void test02() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+
+        try {
+
+                EmployeeMapperAnnotation mapper = openSession.getMapper(EmployeeMapperAnnotation.class);
+                Employee empById = mapper.getEmpById(1);
+                System.out.println(empById);
+        }finally {
+                openSession.close();
+        }
+
+    }
+```
+
