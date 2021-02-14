@@ -1261,3 +1261,21 @@ MybatisTest.java测试方法：
     }
 ```
 
+
+### 三、映射文件⭐
+
+#### 1.增删改查
+
+Mapper XML Flies
+
+
+
+·insert
+
+·update
+
+·delete
+
+·select
+
+
