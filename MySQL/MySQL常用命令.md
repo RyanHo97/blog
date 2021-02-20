@@ -2170,3 +2170,230 @@ WHERE commission_pct IS NOT NULL
 ORDER BY salary DESC
 LIMIT 10;
 
+测试题讲解
+
+已知表 stuinfo
+
+id 学号
+
+name 姓名
+
+email 邮箱	john@126.com
+
+gradeId 年纪编号
+
+sex 性别	男 女
+
+age 年龄
+
+
+
+已知表 grade
+
+id 年级编号
+
+gradeName 年级名称
+
+
+
+一、查询 所有学员的邮箱的用户名 (注：邮箱中@前面的字符)
+
+select substr(email,1,instr(email,'@')-1) 用户名
+
+from stuinfo;
+
+
+
+二、查询男生和女生的个数
+
+select count(*) 个数,sex
+
+from stuinfo
+
+group by sex;
+
+
+
+三、查询年龄>18岁的所有学生的姓名和年级名称
+
+select name,gradeName
+
+from stuinfo
+
+inner join grade g on s.gradeId = g.id
+
+where age>18;
+
+
+
+四、查询哪个年级的学生最小年龄>20岁
+
+1.每个年级的最小年龄
+
+select min(age),gradeId
+
+from stuinfo
+
+group by gradeid
+
+2.在1的结果上筛选
+
+select min(age),gradeId
+
+from stuinfo
+
+group by gradeId
+
+having min(age)>20;
+
+
+
+五、试说出查询语句中涉及到的所有关键字，以及执行先后顺序(⚪数字代表执行顺序)
+
+select 查询列表						   ⑦
+
+from 表										①
+
+连接类型 join 表2					    ②
+
+on 连接条件								③
+
+where 筛选条件						  ④
+
+group by 分组列表					 ⑤
+
+having 分组后的筛选				 ⑥
+
+order by 排序列表					  ⑧
+
+limit 偏移，条目数; 				   ⑨
+
+
+
+
+
+#### 联合查询
+
+#进阶9：联合查询
+
+/*
+
+union 联合 合并：将多条查询语句的结果合并成一个结果
+
+
+
+语法：
+
+查询语句1
+
+union
+
+查询语句2
+
+union
+
+...
+
+
+
+应用场景
+
+要查询的结果来自于多个表，且多个表没有直接的连接关系，但查询的信息一致时。
+
+
+
+特点：⭐
+
+1、要求多条查询语句的查询列数为一致！
+
+2、要求多条查询语句的查询的每一列的类型、顺序最好一致
+
+3、使用union关键字默认去重，如果使用union all 可以包含重复项
+
+
+
+*/
+
+
+
+#引入的案例：查询部门编号>90或邮箱包含a的员工信息
+
+select * from employees where email like '%a%' or department_id>90;
+
+
+
+select * from employees where email like '%a%'
+
+union
+
+select * from employees where department_id>90;
+
+
+
+
+
+#案例：查询中国用户中男性的信息以及外国用户中男性的用户信息
+
+SELECT id,cname,csex FROM t_ca WHERE csex='男'
+UNION
+SELECT t_id,tName,tGender FROM t_ua WHERE tGender='male';
+
+
+
+
+
+## DML语言
+
+#DML语言
+/*
+数据操作语言
+插入：insert
+修改：update
+删除：delete
+
+*/
+
+
+
+### 插入语句
+
+
+
+#一、插入语句
+/*
+语法：
+insert into 表名(列名,...) values(值1,...);
+
+*/
+
+SELECT * FROM beauty;
+#1.插入的值的类型要与列的类型一致或兼容
+INSERT INTO beauty(id,NAME,sex,borndate,phone,photo,boyfriend_id)
+VALUES(13，'唐艺昕','女','1990-4-23','18988888888',NULL,2);
+
+#2.不可以为null的列必须插入值。可以为null的列如何插入值？
+#方式一
+INSERT INTO beauty(id,NAME,sex,borndate,phone,photo,boyfriend_id)
+VALUES(13,'唐艺昕','女','1990-4-23','18988888888',NULL,2);
+
+#方式二
+INSERT INTO beauty(id,NAME,sex,phone)
+VALUES(14,'金星','女','18988888888');
+
+INSERT INTO beauty(id,NAME,sex,phone)
+VALUES(15,'娜扎','女','13888888888');
+
+#3.列的顺序是否可以调换
+INSERT INTO beauty(NAME,sex,id,phone)
+VALUES('蒋欣','女',16,'110');
+
+#4.列数和值的个数必须一致
+
+#错误示例
+INSERT INTO beauty(NAME,sex,id,phone,boyfriend_id)
+VALUES('关晓彤','女',17,'110');
+
+#5.可以省略列名，默认所有列，而且列的顺序和表中列的顺序一致
+
+INSERT INTO beauty
+VALUES(18,'张飞','男',NULL,'119',NULL,NULL);
