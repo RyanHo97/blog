@@ -2360,6 +2360,9 @@ SELECT t_id,tName,tGender FROM t_ua WHERE tGender='male';
 
 
 #一、插入语句
+
+#### 方式一
+
 /*
 语法：
 insert into 表名(列名,...) values(值1,...);
@@ -2367,9 +2370,12 @@ insert into 表名(列名,...) values(值1,...);
 */
 
 SELECT * FROM beauty;
+
+
+
 #1.插入的值的类型要与列的类型一致或兼容
 INSERT INTO beauty(id,NAME,sex,borndate,phone,photo,boyfriend_id)
-VALUES(13，'唐艺昕','女','1990-4-23','18988888888',NULL,2);
+VALUES(13,'唐艺昕','女','1990-4-23','18988888888',NULL,2);
 
 #2.不可以为null的列必须插入值。可以为null的列如何插入值？
 #方式一
@@ -2397,3 +2403,200 @@ VALUES('关晓彤','女',17,'110');
 
 INSERT INTO beauty
 VALUES(18,'张飞','男',NULL,'119',NULL,NULL);
+
+
+
+#### 方式二
+
+/*
+
+语法：
+
+insert into 表名
+
+set 列名=值，列名=值，...
+
+*/
+
+
+
+INSERT INTO beauty
+SET id=19,NAME='刘涛',sex='女',phone='999';
+
+
+
+#### 两种方式对比
+
+1、方式一支持插入多行，方式二不支持
+
+INSERT INTO beauty(id,NAME,sex,borndate,phone,photo,boyfriend_id)
+VALUES(23,'唐艺昕1','女','1990-4-23','18988888888',NULL,2)
+,(24,'唐艺昕2','女','1990-4-23','18988888888',NULL,2)
+,(25,'唐艺昕3','女','1990-4-23','18988888888',NULL,2);
+
+
+
+2、方式二支持子查询，方式二不支持
+
+INSERT INTO beauty(id,NAME,phone)
+SELECT 26,'宋茜','11809866';
+
+INSERT INTO beauty(id,NAME,phone)
+SELECT id,boyname,'12345678'
+FROM boys WHERE id<3;
+
+
+
+### 修改语句
+
+#二、修改语句
+/*
+1.修改单表的记录⭐
+
+语法：
+update 表名
+set 列=新值,列=新值,...
+where 筛选条件;
+
+2.修改多表的记录【补充】
+
+语法：
+
+sql92语法：
+
+update 表1 别名,表2 别名
+
+set 列=值,...
+
+where 连接条件
+
+and 筛选条件;
+
+
+
+sql99语法：
+
+update 表1 别名
+
+inner|left|right join 表2 别名
+
+on 连接条件
+
+
+
+
+
+*/
+
+#### 修改单表的记录
+
+#1.修改单表的记录
+#案例1：修改beauty表中姓唐的女神的电话为13899888899
+
+UPDATE beauty SET phone = '13899888899'
+WHERE NAME LIKE '唐%';
+
+SELECT * FROM beauty;
+
+#案例2：修改boys表中id号为2的名称为张飞，魅力值 10
+UPDATE boys SET boyName='张飞',userCP=10
+WHERE id=2;
+
+SELECT * FROM boys;
+
+
+
+#### 修改多表的记录
+
+#2.修改多表的记录
+
+#案例1、修改张无忌的女朋友的手机号为114
+
+UPDATE boys bo
+INNER JOIN beauty b ON bo.id = b.boyfriend_id
+SET b.phone=114
+WHERE bo.boyName='张无忌';
+
+#案例2、修改没有男朋友的女神的男朋友编号都为2号
+
+UPDATE boys bo
+INNER JOIN beauty b ON bo.id=b.boyfriend_id
+SET b.boyfriend_id=2
+WHERE b.boyfriend_id IS NULL;
+
+SELECT * FROM beauty;
+
+
+
+
+
+### 删除语句
+
+#三、删除语句
+/*
+
+方式一：delete
+语法：
+
+1、单表的删除【⭐】
+delete from 表名 where 筛选条件;
+
+2、多表的删除【补充】
+
+sql92语法：
+delete 表1的别名,表2的别名
+from 表1 别名,表2 别名
+where 连接条件
+and 筛选条件;
+
+sql99语法：
+delete 表1的别名,表2的别名
+from 表1 别名
+inner|left|right join 表2 别名 on 连接条件
+where 筛选条件;
+
+方式二、truncate
+语法：truncate table 表名；
+
+*/
+
+
+
+#### delete语句
+
+#方式一、delete语句
+#1.单表的删除
+#案例1：删除手机号以9结尾的女神信息
+
+DELETE FROM beauty WHERE phone LIKE '%9';
+SELECT * FROM beauty;
+
+#2.多表的删除
+#案例1：删除张无忌的女朋友的信息
+
+DELETE b
+FROM beauty b
+INNER JOIN boys bo ON b.boyfriend_id=bo.id
+WHERE bo.boyName='张无忌';
+
+SELECT * FROM beauty;
+
+#案例：删除黄晓明的信息以及他女朋友的信息
+DELETE b,bo
+FROM beauty b
+INNER JOIN boys bo ON b.boyfriend_id=bo.id
+WHERE bo.boyName='黄晓明';
+
+
+
+#### truncate语句
+
+#方式二、truncate语句
+
+#案例：
+
+truncate table boys；
+
+
+
+
