@@ -1,0 +1,29 @@
+一、打包区别
+mvn package：打包到本项目，一般在项目target目录下。
+mvn install：打包到本地仓库，如果没设置Maven本地仓库，一般在用户/.m2目录下。
+mvn deploy：打包上传到远程仓库，如：私服nexus等，需要配置pom文件。
+二、打包过程
+mvn clean package
+依次执行：clean、resources、compile、testResources、testCompile、test、jar(打包)。
+mvn clean install
+依次执行：clean、resources、compile、testResources、testCompile、test、jar(打包)、install。
+mvn clean deploy
+依次执行：clean、resources、compile、testResources、testCompile、test、jar(打包)、install、deploy。
+由上面分析主要区别如下：
+
+package命令：完成项目编译、单元测试、打包功能，但打包文件未部署到本地Maven仓库和远程Maven仓库。
+install命令：完成项目编译、单元测试、打包功能，同时把打包文件部署到本地Maven仓库，但未部署到远程Maven仓库。
+deploy命令：完成项目编译、单元测试、打包功能，同时把打包文件部署到本地Maven仓库和远程Maven仓库。
+————————————————
+版权声明：本文为CSDN博主「qyyang19」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/yhj19920417/article/details/72627227
+
+打包命令
+
+mvn clean package
+
+# 跳过测试
+-Dmaven.test.skip=true 
+启动命令
+
+java -jar [jar包的完整路径] --spring.profiles.active=dev
