@@ -1,0 +1,9 @@
+config set requirepass 123456
+
+如此，便将密码设置成了123456
+设置之后，可通过以下指令查看密码
+
+config get requirepass
+
+关闭保护模式
+CONFIG SET protected-mode no
