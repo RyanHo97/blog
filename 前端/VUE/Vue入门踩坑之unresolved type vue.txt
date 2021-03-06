@@ -1,0 +1,18 @@
+https://blog.csdn.net/weixin_43872261/article/details/105411339
+
+问题描述:
+在webstorm中用script标签引入vue.js，能够正常执行，但是在创建Vue对象时出现未能解析的提示
+
+解决方案：
+1.
+下载Vue
+https://github.com/vuejs/vue/releases/tag/v2.6.11
+保存并解压
+
+2.
+打开webstorm==> settings ==> Language&Frameworks ==> JavaScript ==> Libraries ==> 右侧Add
+点击attach files
+路径选择刚刚下载的文件夹中\vue-2.6.11\src\core
+不用再继续点，直接点击ok
+
+3.完成
