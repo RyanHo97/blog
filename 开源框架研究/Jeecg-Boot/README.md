@@ -1,3 +1,4 @@
-开源框架研究重心
-http://boot.jeecg.org
+开源框架研究重心  
+JAVA快速开发平台JEECG  
+http://boot.jeecg.org  
 http://doc.jeecg.com/
