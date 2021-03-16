@@ -202,112 +202,115 @@ rem（root em）是一个相对单位，类似于em，em是父元素字体大小
 4. 当屏幕大于等于540像素并且小于等于969像素的时候背景颜色为绿色（540=<x<=969）
 5. 当屏幕大于等于970像素的时候，背景颜色为红色（x>=970）
 
+示例代码
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+		<title></title>
+		<style>
+			/* 
+				1.媒体查询一般按照从大到小 或者 从小到大的顺序来
+				2.小于540px 页面的背景颜色变为蓝色
+			*/
+		   
+		   @media screen and (max-width:539px) {
+				body{
+					background-color: blue;
+				}
+		   }
+		   /* 3.540~970 我们的页面颜色改为 绿色 */
+		   /* @media screen and (min-width:540px) and (max-width:969px){ */
+			/*   body{ */
+			/* 	   background-color: green; */
+			/*   } */
+		   /* } */
+		   
+		   /* 注意：可以利用css层叠性使代码更加简洁 */
+		   @media screen and (min-width:540px){
+		   			   body{
+		   				   background-color: green;
+		   			   }
+		   }
+		   /* 4.大于等于970 我们页面的颜色改为 红色 */
+		   @media screen and (min-width:970px) {
+				body{
+					background-color: red;
+				}
+		   }
+		   /* 5.screen 还有 and 必须带上不能省略 */
+		   /* 6.我们的数字后面必须跟单位 */
+		   
+		</style>
+	</head>
+	<body>
+		
+	</body>
+</html>
+
+```
+
+
+
+### 媒体查询+rem实现元素动态变化
 
 示例代码
 
-    <!DOCTYPE html>
-    <html>
-    	<head>
-    		<meta charset="utf-8">
-    		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    		<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    		<title></title>
-    		<style>
-    			/* 
-    				1.媒体查询一般按照从大到小 或者 从小到大的顺序来
-    				2.小于540px 页面的背景颜色变为蓝色
-    			*/
-    		   
-    		   @media screen and (max-width:539px) {
-    				body{
-    					background-color: blue;
-    				}
-    		   }
-    		   /* 3.540~970 我们的页面颜色改为 绿色 */
-    		   /* @media screen and (min-width:540px) and (max-width:969px){ */
-    			/*   body{ */
-    			/* 	   background-color: green; */
-    			/*   } */
-    		   /* } */
-    		   
-    		   /* 注意：可以利用css层叠性使代码更加简洁 */
-    		   @media screen and (min-width:540px){
-    		   			   body{
-    		   				   background-color: green;
-    		   			   }
-    		   }
-    		   /* 4.大于等于970 我们页面的颜色改为 红色 */
-    		   @media screen and (min-width:970px) {
-    				body{
-    					background-color: red;
-    				}
-    		   }
-    		   /* 5.screen 还有 and 必须带上不能省略 */
-    		   /* 6.我们的数字后面必须跟单位 */
-    		   
-    		</style>
-    	</head>
-    	<body>
-    		
-    	</body>
-    </html>
-    
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			
+			/* html{
+				font-size: 100px;
+			} */
+			
+			@media screen and (min-width:320px) {
+				html{
+					font-size:50px;
+				}
+			}
+			
+			@media screen and (min-width:640px) {
+				html{
+					font-size:100px;
+				}
+			}
+			
+			.top{
+				height: 1rem;
+				font-size: .5rem;
+				text-align: center;
+				background-color: green;
+				color: #fff;
+				line-height: 1rem;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="top">
+			购物车
+		</div>
+		
+	</body>
+</html>
+```
 
 
 
-媒体查询+rem实现元素动态变化
-
-示例代码
-
-    <!DOCTYPE html>
-    <html>
-    	<head>
-    		<meta charset="utf-8">
-    		<title></title>
-    		<style type="text/css">
-    			*{
-    				margin: 0;
-    				padding: 0;
-    			}
-    			
-    			/* html{
-    				font-size: 100px;
-    			} */
-    			
-    			@media screen and (min-width:320px) {
-    				html{
-    					font-size:50px;
-    				}
-    			}
-    			
-    			@media screen and (min-width:640px) {
-    				html{
-    					font-size:100px;
-    				}
-    			}
-    			
-    			.top{
-    				height: 1rem;
-    				font-size: .5rem;
-    				text-align: center;
-    				background-color: green;
-    				color: #fff;
-    				line-height: 1rem;
-    			}
-    		</style>
-    	</head>
-    	<body>
-    		
-    		<div class="top">
-    			购物车
-    		</div>
-    		
-    	</body>
-    </html>
-
-
-
-引入资源（理解）
+### 引入资源（理解）
 
 当样式比较繁多的时候，我们可以针对不同的媒体使用不同stylesheets（样式表）。
 
@@ -319,56 +322,60 @@ rem（root em）是一个相对单位，类似于em，em是父元素字体大小
 
 html
 
-    <!DOCTYPE html>
-    <html>
-    	<head>
-    		<meta charset="utf-8">
-    		<title></title>
-    		<style>
-    			/* 当我们屏幕大于等于 640px以上的，我们让div 一行显示2个 */
-    			/* 当我们屏幕小于640 我们让div一行显示一个 */
-    			/* 一个建议：我们媒体查询最好的方法是从小到大 */
-    			/* 引入资源就是 针对不同的屏幕尺寸 调用不同的css文件 */
-    		</style>
-    		<link rel="stylesheet" href="./style320.css" media="screen and (min-width:320px)"/>
-    		<link rel="stylesheet" href="./style640.css" media="screen and (min-width:640px)"/>
-    	</head>
-    	<body>
-    		<div>1</div>
-    		<div>2</div>
-    	</body>
-    </html>
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			/* 当我们屏幕大于等于 640px以上的，我们让div 一行显示2个 */
+			/* 当我们屏幕小于640 我们让div一行显示一个 */
+			/* 一个建议：我们媒体查询最好的方法是从小到大 */
+			/* 引入资源就是 针对不同的屏幕尺寸 调用不同的css文件 */
+		</style>
+		<link rel="stylesheet" href="./style320.css" media="screen and (min-width:320px)"/>
+		<link rel="stylesheet" href="./style640.css" media="screen and (min-width:640px)"/>
+	</head>
+	<body>
+		<div>1</div>
+		<div>2</div>
+	</body>
+</html>
+```
 
 style320.css
 
-    div{
-    	width: 100%;
-    	height: 100%;
-    }
-    
-    div:nth-child(1){
-    	background-color: pink;
-    }
-    
-    div:nth-child(2){
-    	background-color: purple;
-    }
+```css
+div{
+	width: 100%;
+	height: 100%;
+}
+
+div:nth-child(1){
+	background-color: pink;
+}
+
+div:nth-child(2){
+	background-color: purple;
+}
+```
 
 style640.css
 
-    div{
-    	float: left;
-    	width: 50%;
-    	height: 100%;
-    }
-    
-    div:nth-child(1){
-    	background-color: pink;
-    }
-    
-    div:nth-child(2){
-    	background-color: purple;
-    }
+```css
+div{
+	float: left;
+	width: 50%;
+	height: 100%;
+}
 
+div:nth-child(1){
+	background-color: pink;
+}
 
+div:nth-child(2){
+	background-color: purple;
+}
+```
 
