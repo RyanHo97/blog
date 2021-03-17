@@ -379,3 +379,106 @@ div:nth-child(2){
 }
 ```
 
+
+## 3.Less
+
+### 维护css的弊端
+
+CSS是一门非程序式语言，没有变量、函数、SCOPE（作用域）等概念。
+
+- CSS需要书写大量看似没有逻辑的代码，CSS冗余度是比较高的。
+- 不方便维护及拓展，不利于复用。
+- CSS没有很好的计算能力
+- 非前端开发工程师来讲，往往会因为缺少CSS编写经验而很难写出组织良好且易于维护的CSS代码项目。
+
+
+
+### Less介绍
+
+Less（Leaner Style Sheets 的缩写）是一门CSS扩展语言，也称为CSS预处理器
+
+作为CSS的一种形式的扩展，它并没有减少CSS的功能，而是在现有的CSS语法之上，为CSS加入程序式语言的特性
+
+它在CSS的语法基础上，引入了变量，Mixin（混入），运算以及函数等功能，大大简化了CSS的编写，并且降低了CSS的维护成本，就像它的名称所说的那样，Less可以让我们用更少的代码做更多的事情
+
+Less中文网址：http://lesscss.cn/
+
+常见的CSS预处理器：Sass、Less、Stylus
+
+**一句话：**Less是一门CSS预处理语言，它扩展了CSS的动态特性。
+
+
+
+### Less安装
+
+1. 安装nodejs，可选择版本(8.0)，网址：http://nodejs.cn/download/     注：这里自用版本（14.16.0）
+2. 检查是否安装成功，使用cmd命令（win10是window+r打开 运行输入cmd）---输入 “ node -v “ 查看版本即可
+3. 基于nodejs在线安装Less，使用cmd命令 ”npm install -g less“ 即可
+4. 检查是否安装成功，使用cmd命令 ”lessc -v“ 查看版本即可
+
+
+
+### Less使用
+
+1. 新建my.less
+   - Less变量
+   - Less编译
+   - Less嵌套
+   - Less运算
+
+
+
+my.less代码示例
+
+```less
+// 定义一个粉色的变量
+@color:#00ffff;
+// 错误的变量名 @1color @color~#
+// 变量名区分大小写 @color 和 @Color 是两个不同的变量
+@font14:14px;
+body{
+	background-color: @color;
+}
+div{
+	color: @color;
+	font-size: @font14;
+}
+a{
+	font-size: @font14;
+}
+```
+
+
+
+### Less变量
+
+变量是指没有固定的值，可以改变的。因为我们CSS中的一些颜色和数值等经常使用。
+
+```less
+	@变量名:值;
+```
+
+#### 1.变量命名规范
+
+- 必须有@为前缀
+- 不能包含特殊字符
+- 不能以数字开头
+- 大小写敏感
+
+
+
+### Less编译
+
+本质上，Less包含一套自定义的语法及一个解析器，用户根据这些语法定义自己的样式规则，这些规则最终会通过解析器，编译生成对应CSS文件。
+
+所以，我们需要把我们的less文件，编译生成为css文件，这样我们的html页面才能使用。
+
+
+
+vscode Less插件：Easy LESS
+
+HBuilderX Less插件：less编译(自动编译：package.json->"onDidSaveExecution": true)
+
+
+
+
