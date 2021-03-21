@@ -481,4 +481,202 @@ HBuilderX Less插件：less编译(自动编译：package.json->"onDidSaveExecuti
 
 
 
+### Less嵌套
+
+我们经常用到选择器的嵌套
+
+```css
+#header .logo{
+    width:300px;
+}
+```
+
+Less嵌套写法
+
+```less
+#header{
+    .logo{
+        width:300px
+    }
+}
+```
+
+
+
+如果遇见（交集|伪类|伪元素选择器）
+
+- 内层选择器的前面没有&符号，则它被解析为父选择器的后代；
+- 如果有&符号，它就被解析为父元素自身或父元素的伪类。
+
+
+
+代码示例
+
+html部分
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			/* .header{}
+			.header a{} */
+		</style>
+		<link rel="stylesheet" type="text/css" href="nest.css"/>
+	</head>
+	<body>
+		<div class="header">
+			<a href="#">文字</a>
+		</div>
+		<div class="nav">
+			<div class="logo">传智播客</div>
+		</div>
+	</body>
+</html>
+```
+
+Less部分
+
+```less
+.header{
+	width: 200px;
+	height: 200px;
+	background-color: pink;
+	// 1.less嵌套 子元素的样式直接写到父元素里面就好了
+	a {
+		color: red;
+		// 2.如果有伪类、交集选择器、伪元素选择器 在内层选择器的前面需要加&
+		&:hover{
+			color: blue;
+		}
+	}
+}
+.nav{
+	.logo{
+		color: green;
+	}
+	&::before{
+		content: "";
+	}
+}
+```
+
+
+
+### Less运算⭐
+
+任何数字、颜色或者变量都可以参与运算。就是Less提供了加（+）、减（-）、乘（*）、除（/）算术运算。
+
+```less
+/*Less 里面写*/
+@width:10px + 5;
+div{
+    border:@width solid red;
+}
+/*生成的css*/
+div{
+    border:15px solid red;
+}
+/*Less 甚至还可以这样写*/
+width:(@width + 5) * 2;
+```
+
+注意:
+
+- 乘号（*）和除号（/）的写法
+- **运算符中间左右有个空格隔开1px + 5**
+- 对于两个不同的单位的值之间的运算，运算结果的值取第一个值的单位
+- 如果两个值之间只有一个只有单位，则运算结果就取该单位
+
+
+
+代码示例
+
+html部分
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="count.css" />
+	</head>
+	<body>
+		<div></div>
+	</body>
+</html>
+```
+
+Less部分
+
+```less
+@border:5px + 5;
+div{
+	width: 200px - 50;
+	height: 200px * 2;
+	border: @border solid red;
+}
+img{
+	width: 82/50rem;
+	height: 82/50rem;
+}
+```
+
+
+
+## 4.rem适配方案
+
+思考
+
+1. 我们是配的目标是什么？
+   - 让一些不能等比自适应的元素，达到当设备尺寸发生改变的时候，等比例适配当前设备。
+   - 使用媒体查询根据不同设备按比例设置html的字体大小，然后页面元素使用rem做尺寸单位，当html字体大小变化元素尺寸也会发生变化，从而达到等比例缩放的适配。
+2. 怎么去达到这个目标的？
+3. 在实际的开发当中使用？
+
+
+
+rem实际开发适配方案
+
+1. 按照设计稿与设备宽度的比例，动态计算并设置html根标签的font-size大小；（媒体查询）
+2. CSS中，设计稿元素的宽、高、相对位置等取值，按照同等比例换算为rem为单位的值；
+
+
+
+技术方案1
+
+- less
+- 媒体查询
+- rem
+
+
+
+技术方案2
+
+- flexible.js
+- rem
+
+
+
+总结：
+
+1. 两种方案现在都存在。
+2. 方案2更简单，现阶段大家无需了解里面的js代码。
+
+
+
+### 案例1 rem+媒体查询+less技术
+
+一、设计稿常见尺寸宽度
+
+| 设备              | 常见宽度                                                     |
+| ----------------- | ------------------------------------------------------------ |
+| iphone 4、5       | 640px                                                        |
+| **iphone6、7、8** | **750px**                                                    |
+| Android           | 常见320px、360px、375px、384px、400px、414px、500px、720px<br />**大部分4.7~5寸的安卓设备为720px** |
+
+
 
