@@ -1,0 +1,36 @@
+多行超出显示省略号
+
+  overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;  //2行
+    -webkit-box-orient: vertical;
+注意：-webkit-line-clamp是一个 不规范的属性（unsupported WebKit property），它没有出现在 CSS 规范草案中。只适用于WebKit内核的浏览器，因此firebox、ie等并不支持该属性。
+
+其他浏览器做法：
+
+比较靠谱简单的做法就是设置相对定位的容器高度，用包含省略号(…)的元素模拟实现：
+文字容器样式设置：
+
+   position:relative;
+    line-height:1.4em;
+    height:4.2em; //height是line-height的整数倍，防止文字显示不全
+    overflow:hidden;
+
+文字容器::after {
+   background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    bottom: 0;
+    content: "...";
+    padding: 0 5px 1px 30px;
+    position: absolute;
+    right: 0;
+}
+
+或者使用插件：js插件-Clamp.js 、 jquery插件-jQuery.dotdotdot
+
+ 
+
+单行不换行：width:100%;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;
+
+
+Clamp.js地址：	https://github.com/josephschmitt/Clamp.js
