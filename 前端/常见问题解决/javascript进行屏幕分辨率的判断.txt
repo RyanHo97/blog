@@ -1,0 +1,5 @@
+<script>
+      if (screen.width < 1920){
+        //语句
+      }
+</script>
