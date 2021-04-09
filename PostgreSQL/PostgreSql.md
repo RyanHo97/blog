@@ -116,3 +116,70 @@ psql ryanblog
 >\dt
 
 ```
+
+## 4.字段类型
+
+#### 知识点
+
+PostgreSql基础数据类型
+
+#### PostgreSql基础数据类型
+
+
+
+- 数值型
+  - integer(int)
+  - real
+  - serial
+- 文字型
+  - char
+  - varchar
+  - text
+- 布尔型
+  - boolean
+- 日期型
+  - date
+  - time
+  - timestamp
+- 特色类型
+  - Array
+  - 网络地址型(inet)
+  - JSON型
+  - XML型
+
+
+
+更多数据类型可访问官网去查看
+
+
+
+## 5.添加表约束
+
+#### 知识点
+
+表字段的约束条件
+
+#### 实战演习
+
+```sql
+create table posts(
+ id serial primary key,
+ title varchar(255) not null,
+ content text check(length(content)>3),
+ is_draft boolean default TRUE,
+ is_del boolean default FALSE,
+ created_date timestamp default 'now' 
+);
+
+--说明
+/*
+约束条件：
+
+not null：不能为空
+unique：在所有数据中值必须唯一
+check：字段设置条件
+default：字段默认值
+primary key(not null,unique)：主键，不能为空，且不能重复
+*/
+```
+
