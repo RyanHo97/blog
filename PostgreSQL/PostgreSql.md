@@ -52,3 +52,67 @@ $ sudo apt-get install postgresql
 $ psql --version
 ```
 
+## 2.初来乍到数据库
+
+#### 知识点
+
+- psql的基础
+- 数据库简单操作
+- 写个SQL
+
+#### 实战演习
+
+```bash
+sudo su postgres 切换用户
+psql --version  查看版本
+psql -l			查看所有的数据库
+createdb ryanhoblog		创建数据库
+psql -l
+psql ryanhoblog			进入数据库
+help					帮助
+\h						帮助操作表的命令
+\?						帮助操作库的命令
+\l						查看所有的数据库
+\q						退出
+psql ryanhoblog
+select now();			查看当前时间
+select version();		查看当前版本
+\q
+dropdb ryanhoblog		删除数据库
+psql -l
+```
+
+
+
+## 3.操作数据表
+
+#### 知识点
+
+- create table
+- drop table
+- psql使用
+
+#### 实战演习
+
+```bash
+sudo su postgres
+createdb ryanblog
+psql -l
+psql ryanblog
+
+>create table posts (title varchar(255),content text);  建表 posts 文章标题 文本类型
+>\dt	当前表一览
+>\d posts	具体表的信息
+>alter table posts rename to ryanposts;	重命名表
+>\dt
+>drop table ryanposts;	删除表
+>\dt
+>\q
+
+nano db.sql	复用sql语句
+
+psql ryanblog
+>\i db.sql
+>\dt
+
+```
