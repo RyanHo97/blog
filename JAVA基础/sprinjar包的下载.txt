@@ -1,0 +1,8 @@
+https://blog.csdn.net/qq_35661171/article/details/86165467
+
+直接在浏览器地址栏输入https://repo.spring.io这个链接，并点击进去
+在打开的另一个页面中，选择左侧的第二个目录
+打开后依次选择libs-release-local    --->  org   --->   springframework
+然后选择spring，这是可以看到spring3、spring4、spring5等各个版本，这里示范下载第一个
+在3.2.0.RELEASE上单击右键，选择Native Browser
+选择要下载的版本，比如第一个，点击左键即可下载
