@@ -183,3 +183,34 @@ primary key(not null,unique)：主键，不能为空，且不能重复
 */
 ```
 
+
+
+## 6.INSERT语句
+
+#### 知识点
+
+```sql
+insert into [tablename] (field,...) values （value,...)
+```
+
+#### 实战演习
+
+```sql
+psql ryanblog
+\dt
+\d posts
+```
+
+#### SQL部分
+
+```sql
+insert into posts (title,content) values ('','');
+以上语句报错
+
+insert into posts (title,content) values ('title1','content11');
+insert into posts (title,content) values ('title1','content22');
+insert into posts (title,content) values ('title1','content33');
+select * from posts;
+```
+
+
