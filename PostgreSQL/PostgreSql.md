@@ -214,7 +214,6 @@ select * from posts;
 ```
 
 
-
 ## 7.SELECT语句
 
 #### 知识点
@@ -235,11 +234,71 @@ create table users (
 
 insert into users (player,score,team) values
 ('库里',28.3,'勇士'),
-('哈登',28.3,'火箭'),
-('阿杜',28.3,'勇士'),
-('阿詹',28.3,'骑士'),
-('神龟',28.3,'雷霆'),
-('白边',28.3,'热火');
+('哈登',30.3,'火箭'),
+('阿杜',25.3,'勇士'),
+('阿詹',27.3,'骑士'),
+('神龟',31.3,'雷霆'),
+('白边',19.3,'热火');
+```
+
+
+
+#### SQL实战
+
+```bash
+psql ryanblog
+\i init.sql
+\dt
+\d users
+select * from users;
+```
+
+
+
+## 8.WHERE语句
+
+#### 知识点
+
+where语句的使用
+
+使用where语句来设定select，update，delete语句数据抽出的条件。
+
+#### 实战演习
+
+```sql
+select * from users;
+select * from users where score > 20;
+select * from users where score < 30;
+select * from users where score > 20 and score < 30;
+select * from users where team = '勇士';
+select * from users where team !='勇士';
+select * from users where player like '阿%';
+select * from users where player like '阿_';
+```
+
+
+
+## 9.数据抽出选项
+
+#### 知识点
+
+select语句在抽出数据时，可以对语句设置更多的选项，已得到想用的数据。
+
+- order by
+- limit
+- offset
+
+#### 实战演习
+
+```sql
+select * from users order by score asc;
+select * from users order by score desc;
+select * from users order by team;
+select * from users order by team,score;
+select * from users order by team,score desc;
+select * from users order by team desc,score desc;
+select * from users order by score desc limit 3;
+select * from users order by score desc limit 3 offset 1; //偏移量可控制分页
 ```
 
 
