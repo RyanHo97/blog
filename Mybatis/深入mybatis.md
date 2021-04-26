@@ -1281,6 +1281,22 @@ Mapper XML Flies
 ·select
 
 
+实体类需要添加有参构造器和无参构造器
+
+```java
+    //有参构造器
+    public Employee(Integer id, String lastname, String email, String gender) {
+        this.id = id;
+        this.lastName = lastname;
+        this.email = email;
+        this.gender = gender;
+    }
+
+    //无参构造器
+    public Employee() {
+    }
+```
+
 
 Mapper
 
@@ -1339,7 +1355,7 @@ Mapper.xml
 
 ```java
     /*
-    测试增删改
+    测试增加数据
 
 
      */
