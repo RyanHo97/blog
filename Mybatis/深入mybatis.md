@@ -1264,6 +1264,8 @@ MybatisTest.java测试方法：
 
 ### 三、映射文件⭐
 
+- 映射文件指导着Mybatis如何进行数据库增删改查，有着非常重要的意义；
+
 #### 1.增删改查
 
 Mapper XML Flies
@@ -1279,3 +1281,86 @@ Mapper XML Flies
 ·select
 
 
+
+Mapper
+
+```java
+package com.atguigu.mybatis.dao;
+
+import com.atguigu.mybatis.bean.Employee;
+
+public interface EmployeeMapper {
+
+    public Employee getEmpById(Integer id);
+
+    public void addEmp(Employee employee);
+
+    public void updateEmp(Employee employee);
+
+    public void deleteEmpById(Integer id);
+}
+
+```
+
+
+
+Mapper.xml
+
+```xml
+    <!-- databaseId指定不同厂商的数据库 -->
+    <select id="getEmpById" resultType="emp" databaseId="mysql">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+    <!--public void addEmp(Employee employee);-->
+
+    <!--  parameterType:指定参数类型，可以省略  -->
+    <insert id="addEmp" parameterType="com.atguigu.mybatis.bean.Employee">
+        INSERT INTO tbl_employee(last_name,email,gender)
+        VALUES(#{lastName},#{email},#{gender})
+    </insert>
+
+    <!--public void updateEmp(Employee employee);-->
+    <update id="updateEmp">
+        UPDATE tbl_employee
+        SET  last_name=#{lastName},email=#{email},gender=#{gender}
+        where id=#{id}
+    </update>
+
+    <!--public void deleteEmpById(Integer id);-->
+    <delete id="deleteEmpById">
+        DELETE FROM tbl_employee WHERE id=#{id}
+    </delete>
+```
+
+
+
+测试(JUNIT)
+
+```java
+    /*
+    测试增删改
+
+
+     */
+    @Test
+    public void test03() throws IOException{
+
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1、获取到的SqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession();
+
+        try {
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+
+            Employee employee = new Employee(null, "ryan", "ryanho97@163.com", "1");
+
+            mapper.addEmp(employee);
+
+            //2、手动提交数据
+            openSession.commit();
+        }finally {
+
+        }
+    }
+```
