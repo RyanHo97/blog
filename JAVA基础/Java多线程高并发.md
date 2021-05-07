@@ -304,5 +304,112 @@ public class Test01CurrentThread {
 
 ```
 
+3.2 currentThread的一个复杂案例
+
+定义线程类
+
+```java
+package com.ryan.threadmethod;
+
+/**
+ * Author:Ryanho97.github.io
+ * Create: 14:30  2021/5/7
+ */
+public class SubThread2 extends Thread {
+    public SubThread2(){
+        System.out.println("构造方法中，Thread.currentThread().getName() :"+Thread.currentThread().getName());
+        System.out.println("构造方法中，this.getName()："+this.getName());
+    }
+
+    @Override
+    public void run() {
+        System.out.println("run方法中，Thread.currentThread().getName() :"+Thread.currentThread().getName());
+        System.out.println("run方法中，this.getName()："+this.getName());
+    }
+}
+```
+
+测试类
+
+```java
+package com.ryan.threadmethod;
+
+/**
+ * Author:Ryanho97.github.io
+ * Create: 14:38  2021/5/7
+ */
+public class Test02CurrentThread {
+    public static void main(String[] args) throws InterruptedException {
+        //创建子线程对象
+        SubThread2 t2 = new SubThread2();
+        t2.setName("t2");  //设置线程的名称
+        t2.start();
+
+        //
+        Thread.sleep(500);  //main线程睡眠500毫秒
+
+        //Thread(Runnable)构造方法形参是Runnable接口，调用时传递的实参是接口的实现类对象
+        Thread t3 = new Thread(t2);
+        t3.start();
+    }
+}
+```
+
+
+
+3.3 setName()/getName()
+
+thread.setName(线程名称)，设置线程名称
+
+thread.getName()，返回线程名称
+
+通过设置线程名称，有助于程序调试，提高程序的可读性，建议为每个线程都设置一个能够体现线程功能的名称
+
+
+
+3.4 isAlive()
+
+thread.isAlive()判断当前线程是否处于活动状态
+
+活动状态就是线程已启动并且尚未终止
+
+定义线程类
+
+```java
+package com.ryan.threadmethod.p2IsAlive;
+
+/**
+ * Author:Ryanho97.github.io
+ * Create: 14:54  2021/5/7
+ */
+public class SubThread3 extends Thread {
+    @Override
+    public void run() {
+        System.out.println("run方法，isalive"+this.isAlive());  //运行状态，true
+    }
+}
+```
+
+测试类
+
+```java
+package com.ryan.threadmethod.p2IsAlive;
+
+/**
+ * Author:Ryanho97.github.io
+ * Create: 14:54  2021/5/7
+ * 测试线程的活动状态
+ */
+public class Test {
+    public static void main(String[] args) {
+        SubThread3 t3 = new SubThread3();
+        System.out.println("begin==" + t3.isAlive());  //false，在启动线程之前
+        t3.start();
+        System.out.println("end==" + t3.isAlive());  //结果不一定，打印这一行时，如果t3线程还没结束就返回true，如果t3线程已结束，返回false
+    }
+}
+```
+
+
 
 
