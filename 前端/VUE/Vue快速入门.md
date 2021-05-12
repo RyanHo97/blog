@@ -204,13 +204,182 @@ Vue会管理el选项**命中的元素**及其内部的**后代元素**
 
 #### 1.内容绑定，事件绑定
 
+##### v-text
+
+设置标签的文本值(textContent)
+
+```html
+<div id="app">
+    <h2 v-text="message"></h2>
+</div>
+```
+
+```html
+<script>
+    var app = new new Vue({
+        el:"#app",
+        data:{
+            message:"黑马程序员"
+        }
+    })
+</script>
+```
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VUE基础</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h2 v-text="message+'!'">深圳</h2>
+        <h2 v-text="info+'!'">深圳</h2>
+        <h2>{{message+"!"}}深圳</h2>
+    </div>
+    <script>
+        var app = new new Vue({
+            el:"#app",
+            data:{
+                message:"黑马程序员！！！",
+                info:"前端与移动教研部"
+            }
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-text指令的作用是：设置标签的内容(textContent)
+- 默认写法会替换全部内容，使用差值表达式{{}}可以替换指定内容
+- 内部支持写表达式
+
+##### v-html
+
+设置标签的innerHTML
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VUE基础</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-html="content"></p>
+        <p v-text="content"></p>
+    </div>
+
+    <script>
+        // 创建Vue实例
+        var app = new Vue({
+            el:"#app",
+            data:{
+                // content:"黑马程序员"
+                content:"<a href='http://www.itheima.com'>黑马程序员</a>" 
+            }
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-html指令作用是：设置元素的innerHTML
+- 内容中有html结构会被解析为标签
+- v-text指令无论什么内容是什么，只会解析为文本
+- 解析文本使用v-text，需要解析html结构使用v-html
+
+##### v-on
+
+为元素绑定事件
+
+```html
+<div id="app">
+    <input type="button" value="事件绑定" v-on:click="doIt">
+    <input type="button" value="事件绑定" v-on:monseenter="doIt">
+    <input type="button" value="事件绑定" @dblclick="doIt">
+</div>
+```
+
+```javascript
+var app = new Vue({
+            el:"#app",
+            methods: {
+                doIt:function(){
+                    //逻辑
+                }
+            }
+})
+```
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VUE基础</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="v-on指令" v-on:click="doIt">
+        <input type="button" value="v-on简写" @click="doIt">
+        <input type="button" value="v-on指令" @dblclick="doIt">
+        <h2 @click="changeFood">{{food}}</h2>
+    </div>
+
+    <script>
+        // 创建Vue实例
+        var app = new Vue({
+            el:"#app",
+            data:{
+                food:"西兰花炒蛋"
+            },
+            methods: {
+                doIt:function(){
+                    alert("做It");
+                },
+                changeFood:function(){
+                    // console.log(this.food);
+                    this.food+="好好吃！"
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-on指令的作用是：为元素绑定事件
+- 时间名不需要写on
+- 指令可以简写为@
+- 绑定的方法定义在methods属性中
+
+##### 案例：计数器
+
+
+
+
+
 #### 2.显示切换，属性绑定
 
 #### 3.列表循环，表单元素绑定
-
-
-
-
-el:挂载点
-
-data:数据对象
