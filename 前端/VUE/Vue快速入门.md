@@ -386,6 +386,76 @@ var app = new Vue({
 
 5.累加的逻辑：小于10累加，否则提示
 
+6.递减的逻辑：大于0递减，否则提示
+
+
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计数器</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 计数器功能区域 -->
+        <div class="input-num">
+            <button @click="add">
+                +
+            </button>
+            <span>{{num}}</span>
+            <button @click="sub">
+                -
+            </button>
+        </div>
+        <img src="http://www.itheima.com/images/logo.png" alt="">
+    </div>
+
+    <script>
+        // 创建Vue实例
+        var app = new Vue({
+            el:"#app",
+            data: {
+                num:1
+            },
+            methods: {
+                add:function(){
+                    console.log('add');
+                    if(this.num<10){
+                        this.num++;
+                    }else{
+                        alert('别点了，最大啦！');
+                    }
+                },
+                sub:function(){
+                    console.log('sub');
+                    if(this.num>0){
+                        this.num--;
+                    }else{
+                        alert('别点了，最小啦！');
+                    }
+                },
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- 创建Vue示例时：el(挂载点)，data(数据),methods(方法)
+- v-on指令的作用是绑定事件，简写为@
+- 方法中通过this，关键字获取data中的数据
+- v-text指令的作用是：设置元素的文本值，简写为{{}}
+- v-html指令的作用是：设置元素的innerHTML
+
+
 
 
 
