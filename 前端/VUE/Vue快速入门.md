@@ -376,6 +376,15 @@ var app = new Vue({
 
 ##### 案例：计数器
 
+1.data中定义数据：比如：num
+
+2.methods中添加两个方法：比如add(递增)，sub(递减)
+
+3.使用v-text将num设置给span标签
+
+4.使用v-on将add，sub分别绑定+,-按钮
+
+5.累加的逻辑：小于10累加，否则提示
 
 
 
