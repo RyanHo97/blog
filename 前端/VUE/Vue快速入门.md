@@ -456,9 +456,74 @@ var app = new Vue({
 - v-html指令的作用是：设置元素的innerHTML
 
 
-
-
-
 #### 2.显示切换，属性绑定
+
+##### v-show
+
+根据表达值的真假，切换元素的显示和隐藏
+
+```html
+<div id="app">
+    <img src="地址" v-show="true">
+    <img src="地址" v-show="isShow">
+    <img src="地址" v-show="age>=18">
+</div>
+```
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    data:{
+        isShow:false,
+        age:16
+    }
+})
+```
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-show指令</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="切换显示状态" @click="changeIsShow">
+        <input type="button" value="累加年龄" @click="addAge">
+        <img v-show="isShow" src="./img/logodao.jpg" alt="">
+        <img v-show="age>=18" src="./img/logodao.jpg" alt="">
+    </div>
+
+    <script>
+        // 创建Vue实例
+        var app = new Vue({
+            el:"#app",
+            data:{
+                isShow:false,
+                age:17
+            },
+            methods: {
+                changeIsShow:function(){
+                    this.isShow = !this.isShow;
+                },
+                addAge:function(){
+                    this.age++;
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-show指令的作用是：根据真假切换元素的显示状态
+- 原理是修改元素的display，实现显示隐藏
 
 #### 3.列表循环，表单元素绑定
