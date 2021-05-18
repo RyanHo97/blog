@@ -529,5 +529,176 @@ var app = new Vue({
 - 值为true元素显示，值为false元素隐藏
 - 数据改变之后，对应元素的显示状态会同步更新
 
+##### v-if
+
+根据表达值的真假，切换元素的显示和隐藏（操纵dom元素）
+
+```html
+<div id="app">
+    <p v-if="true">我是一个p标签</p>
+    <p v-if="isShow">我是一个p标签</p>
+    <p v-if="表达式">我是一个p标签</p>
+</div>
+```
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    data:{
+        isShow:false
+    }
+})
+```
+
+代码示例
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-if指令</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="切换显示" @click="toggleIsShow">
+        <p v-if="isShow">黑马程序员</p>
+        <p v-show="isShow">黑马程序员</p>
+        <p v-if="temperature>=35">很热</p>
+    </div>
+
+    <script>
+        // 创建Vue实例
+        var app = new Vue({
+            el:"#app",
+            data:{
+                isShow:false,
+                temperature:40
+            },
+            methods: {
+                toggleIsShow:function(){
+                    this.isShow = !this.isShow;
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-if指令的作用是：根据表达式的真假切换元素的显示状态
+- 本质是通过操纵dom元素来切换显示状态
+- 表达式的值为true，元素存在于dom树中，为false，从dom树中移除
+- 频繁的切换v-show，反之使用v-if，前者的切换消耗小
+
+##### v-bind
+
+设置元素的属性（比如：src，title，class）
+
+语法：v-bind：属性名=表达式
+
+```html
+<div>
+    <img :src="imgSrc">
+    <img :title="imgTitle+'!!!!'">
+    <img :src="isActive?'active':">
+    <img :src="{active:isActive}">
+</div>
+```
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    data:{
+        imgSrc:"图片地址"，
+        imgTitle:"黑马程序员",
+        isActive:false
+    }
+})
+```
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-bind指令</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .active{
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <img v-bind:src="imgSrc" alt="">
+        <br>
+        <img :src="imgSrc" alt="" :title="imgTitle+'!!!!'"
+        :class="isActive?'active':''" @click="toggleActive">
+        <br>
+        <img :src="imgSrc" alt="" :title="imgTitle+'!!!!'"
+        :class="{active:isActive}" @click="toggleActive">
+    </div>
+
+    <script>
+        // 创建Vue实例
+        var app = new Vue({
+            el:"#app",
+            data:{
+                imgSrc:"./img/logodao.jpg",
+                imgTitle:"黑马程序员",
+                isActive:false
+            },
+            methods: {
+                toggleActive:function(){
+                    this.isActive = !this.isActive;
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-bind指令的作用是：为元素绑定属性
+- 完整写法是v-bind:属性名
+- 简写的话可以直接忽略v-bind，只保留:属性名
+- 需要动态的增删class建议使用对象的方式
+
+##### 案例：图片的切换
+
+```html
+<div id="#app">
+    <img src="地址">
+    <a href="#">上一张</a>
+    <a href="#">下一张</a>
+</div>
+```
+
+这里v-show性能更好
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    data:{
+        imgArr:[],
+        index:0
+    },
+    methods:{
+        prev:function(){},
+        next:function(){}
+    }
+})
+```
 
 #### 3.列表循环，表单元素绑定
