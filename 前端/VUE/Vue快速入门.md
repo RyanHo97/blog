@@ -700,6 +700,80 @@ var app = new Vue({
     }
 })
 ```
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片切换</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="mask">
+        <div class="center">
+            
+            <h2 class="title">
+                <img src="./img/logodao.jpg" alt="">
+                孙悟空七龙珠
+            </h2>
+
+            <!-- 图片 -->
+            <img :src="imgArr[index]" alt="">
+            
+            <!-- 左箭头 -->
+            <a href="javascript:void(0)" v-show="index!=0" @click="prev" class="left">
+                <img src="./img/arrow-left-bold.png" alt="">
+            </a>
+            <!-- 右箭头-->
+            <a href="javascript:void(0)" v-show="index<imgArr.length-1" @click="next" class="right">
+                <img src="./img/arrow-right-bold.png" alt="">
+            </a>
+        </div>
+    </div>
+
+    
+    <script>
+        var app = new new Vue({
+            el:"#mask",
+            data:{
+                imgArr:[
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                    "./img/logodao.jpg",
+                ],
+                index:0
+            },
+            methods:{
+                prev:function(){
+                    this.index--;
+                },
+                next:function(){
+                    this.index++;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+```
+
+- 列表数据使用**数组**保存
+- **v-bind**指令可以设置元素属性，**比如src**
+- **v-show**和**v-if**都可以切换元素的显示状态，频繁切换用**v-show**
+
+
 
 #### 3.列表循环，表单元素绑定
 
