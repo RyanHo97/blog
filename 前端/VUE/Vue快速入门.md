@@ -780,6 +780,89 @@ var app = new Vue({
 
 ##### v-for
 
+根据数据生成列表结构
+
+```html
+<div id="app">
+    <ul>
+        <li v-for="(item,index) in arr" :title="item">
+            {{index}}{{item}}
+        </li>
+        <li v-for="(item,index) in objArr">
+        	{{item.name}}
+        </li>
+    </ul>
+</div>
+```
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    data:{
+        arr:[1,2,3,4,5],
+        objArr:[
+            {name:"jack"},
+            {name:"rose"}
+        ]
+    }
+})
+```
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-for指令</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="添加数据" @click="add">
+        <input type="button" value="移除数据" @click="remove">
+        <ul>
+            <li v-for="(it,index) in arr">
+                {{index+1}}黑马程序员小区：{{it}}
+            </li>
+        </ul>
+        <h2 v-for="item in vegetables" v-bind:title="item.name">
+            {{item.name}}
+        </h2>
+    </div>
+    <script>
+        var app = new new Vue({
+            el:"#app",
+            data:{
+                arr:["北京","上海","广州","深圳"],
+                vegetables:[
+                    {name:"西兰花炒蛋"},
+                    {name:"蛋炒西兰花"}
+                ]
+            },
+            methods: {
+                add:function(){
+                    this.vegetables.push({name:"花菜炒蛋"});
+                },
+                remove:function(){
+                    this.vegetables.shift();
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-for指令的作用是：根据数据生成列表结构
+- 数组经常和v-for结合使用
+- 语法是(item,index) in 数据
+- item和index可以结合其他指令一起使用
+- 数组长度的更新会同步到页面上，是响应式的
 
 
 ##### v-on
