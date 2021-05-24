@@ -867,6 +867,23 @@ var app = new Vue({
 
 ##### v-on
 
+传递自定义参数，事件修饰符
 
+```html
+<div id="app">
+    <input type="button" @click="dolt(p1,p2)"/>
+    <input type="text" @keyup="sayHi"/>
+</div>
+```
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    methods:{
+        dolt:function(p1,p2){},
+        sayHi:function(){}
+    }
+})
+```
 
 ##### v-mode
