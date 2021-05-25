@@ -886,4 +886,22 @@ var app = new Vue({
 })
 ```
 
-##### v-mode
+##### v-model
+
+获取和设置表单元素的值(双向数据绑定)
+
+```html
+<div id="app">
+    <input type="text" v-model="message" />
+</div>
+```
+
+```javascript
+var app = new Vue({
+    el:"#app",
+    data:{
+        message:"黑马程序员"
+    }
+})
+```
+
