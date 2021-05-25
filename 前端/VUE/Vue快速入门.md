@@ -905,3 +905,46 @@ var app = new Vue({
 })
 ```
 
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model指令</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" v-model="message" @click="setM">
+        <input type="text" v-model="message" @keyup.enter="getM">
+        <h2>{{message}}</h2>
+    </div>
+
+    <script>
+        var app = new new Vue({
+            el:"#app",
+            data:{
+                message:"黑马程序员"
+            },
+            methods:{
+                getM:function(){
+                    alert(this.message);
+                },
+                setM:function(){
+                    this.message="库丁鱼";
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+```
+
+- v-model指令的作用是便捷的设置和获取表单元素的值
+- 绑定的数据会和表单元素值相关联
+- 绑定的数据<-->表单元素的值
