@@ -26,4 +26,4 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
 
 ​             <---------------状态行、响应头、实体内容-------
 
-1. 前后应用从浏览器端向
+1. 前后应用从浏览器端向服务器发送HTTP请求（请求报文）
