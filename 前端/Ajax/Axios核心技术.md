@@ -29,3 +29,12 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
 1. 前后应用从浏览器端向服务器发送HTTP请求（请求报文）
 2. 后台服务器接收到请求后，调度服务器应用处理请求，向浏览器端返回HTTP响应（响应报文）
 3. 浏览器端接收到响应，解析显示响应体/调用监视回调
+#### 1.3 HTTP请求报文
+
+1. 请求行：
+   - method url
+   - GET /product_detail?id=2
+   - POST /login
+2. 多个请求头
+   - 
+3. 请求体
