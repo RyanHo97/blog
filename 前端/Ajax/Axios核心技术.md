@@ -42,3 +42,16 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
 3. 请求体
    - username=tom&pwd=123
    - {"username":"tom","pwd":123}
+#### 1.4 HTTP响应报文
+
+1. 响应状态行：status statusText
+
+2. 多个响应头
+
+   Content-Type：text/html;charset=utf-8
+
+   Set-Cookie:BD_CK_SAM=1;path=/
+
+3. 响应体
+
+   html 文本/json 文本/js/css/图片...
