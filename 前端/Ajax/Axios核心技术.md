@@ -42,6 +42,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
 3. 请求体
    - username=tom&pwd=123
    - {"username":"tom","pwd":123}
+
 #### 1.4 HTTP响应报文
 
 1. 响应状态行：status statusText
@@ -55,3 +56,30 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
 3. 响应体
 
    html 文本/json 文本/js/css/图片...
+
+#### 1.5 post请求体参数格式
+
+1. Content-Type:application/x-www-form-urlencoded;charset=utf-8
+
+   用于键值对参数，参数的键值用=连接，参数之间用&连接
+
+   例如：name=%E5%B0%8F%E6%98%8E&age=12
+
+2. Content-Type:application/json;charset=utf-8
+
+   用于json字符串参数
+
+   例如:{"name":"%E5%B0%8F%E6%98%8E","age":12}
+
+3. Content-Type:multipart/form-data
+
+#### 1.6 常见的响应状态码
+
+| 状态码 | 对应英文              | 对应释义                           |
+| ------ | --------------------- | ---------------------------------- |
+| 200    | OK                    | 请求成功。一般用于GET与POST请求    |
+| 201    | Created               | 已创建。成功请求并创建了新的资源   |
+| 401    | Unauthorized          | 未授权/请求要求用户的身份认证      |
+| 404    | Not Found             | 服务器无法根据客户端的请求找到资源 |
+| 500    | Internal Server Error | 服务器内部错误，无法完成请求       |
+
