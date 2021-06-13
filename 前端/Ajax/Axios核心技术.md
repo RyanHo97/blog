@@ -83,3 +83,27 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
 | 404    | Not Found             | 服务器无法根据客户端的请求找到资源 |
 | 500    | Internal Server Error | 服务器内部错误，无法完成请求       |
 
+#### 1.7 不同类型的请求及其作用
+
+1. GET：从服务器端读取数据
+2. POST：向服务器端添加新数据
+3. PUT：更新服务器端已经数据
+4. DELETE：删除服务器端数据
+
+#### 1.8 API的分类
+
+1. REST API： restful
+
+   （1）发送请求进行CRUD那个操作由请求方式来决定
+
+   （2）同一个请求路径可以进行多个操作
+
+   （3）请求方式会用到GET/POST/PUT/DELETE
+
+2. 非REST API： restless
+
+   （1）请求方式不决定请求的CRUD操作
+
+   （2）一个请求路径只对应一个操作
+
+   （3）一般只有GET/POST
