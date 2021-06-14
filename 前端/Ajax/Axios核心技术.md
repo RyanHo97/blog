@@ -107,3 +107,41 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview
    （2）一个请求路径只对应一个操作
 
    （3）一般只有GET/POST
+
+#### 1.9 使用json-server搭建REST API
+
+地址：https://github.com/typicode/json-server
+
+安装（全局）：npm install -g json-server
+
+创建db.json：
+
+```json
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" }
+}
+```
+
+基于文件产生接口：
+
+```bash
+json-server --watch db.json
+```
+
+启动后会生成接口：
+
+```bash
+  Resources
+  http://localhost:3000/posts
+  http://localhost:3000/comments
+  http://localhost:3000/profile
+
+  Home
+  http://localhost:3000
+```
