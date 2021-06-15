@@ -145,3 +145,9 @@ json-server --watch db.json
   Home
   http://localhost:3000
 ```
+#### 1.10 使用axios访问测试
+
+```javascript
+ <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+```
+
