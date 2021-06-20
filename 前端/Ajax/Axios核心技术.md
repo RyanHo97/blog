@@ -151,3 +151,58 @@ json-server --watch db.json
  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
 ```
 
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <button onclick="testGet()">GET请求</button>
+    <button onclick="testPost()">POST请求</button>
+    <button onclick="testPut()">PUT请求</button>
+    <button onclick="testDelete()">DELETE请求</button>
+  </div>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script>
+    function testGet(){
+      axios.get('http://localhost:3000/posts')
+        .then(response =>{
+          console.log('/posts',response.data)
+        })
+    }
+
+    function testPost(){
+      axios.post('http://localhost:3000/posts',{"title":"json-server3","author":"typicode3"})
+        .then(response =>{
+          console.log('/posts post',response.data)
+        })
+    }
+
+    function testPut(){
+      axios.put('http://localhost:3000/posts/3',{"title":"json-server...","author":"typicode..."})
+        .then(response =>{
+          console.log('/posts post',response.data)
+        })
+    }
+
+    function testDelete(){
+      axios.delete('http://localhost:3000/posts/3')
+        .then(response =>{
+          console.log('/posts post',response.data)
+        })
+    }
+  </script>
+  <script>
+  
+  </script>
+</body>
+</html>
+```
