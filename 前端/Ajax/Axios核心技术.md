@@ -231,3 +231,11 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest
    （1）一般请求：浏览器一般会直接显示响应体数据，也就是我们常说的刷新/跳转页面
 
    （2）ajax请求：浏览器不会对界面进行任何更新操作，只是调用监视的回调函数并传入响应相关数据
+   
+#### 2.4 API
+
+1. XMLHttpRequest()：创建XHR对象的构造函数
+2. status：响应状态码值，比如200，404
+3. statusText：响应状态文本
+4. readyState：标识请求状态的只读属性
+5. onreadystatechange：绑定readyState改变的监听
