@@ -239,3 +239,8 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest
 3. statusText：响应状态文本
 4. readyState：标识请求状态的只读属性
 5. onreadystatechange：绑定readyState改变的监听
+6. responseType：指定响应数据类型，如果是'json'，得到响应后自动解析响应体数据
+7. response：响应体数据，类型取决于responseType的指定
+8. timeout：指定请求超时时间，默认为0代表没有限制
+9. ontimeout：绑定超时的监听
+10. onerror：绑定请求网络错误的监听
