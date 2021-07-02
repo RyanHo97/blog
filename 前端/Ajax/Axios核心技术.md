@@ -244,4 +244,4 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest
 8. timeout：指定请求超时时间，默认为0代表没有限制
 9. ontimeout：绑定超时的监听
 10. onerror：绑定请求网络错误的监听
-11.open（）
+11. open()：初始化一个请求，参数为：{method,url[,async]}
