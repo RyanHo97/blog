@@ -245,3 +245,9 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest
 9. ontimeout：绑定超时的监听
 10. onerror：绑定请求网络错误的监听
 11. open()：初始化一个请求，参数为：{method,url[,async]}
+12. send(data)：发送请求
+13. abort()：中断请求
+14. getResponseHeaders(name)：获取指定名称的响应头值
+15. getAllResponseHeaders()：获取所有响应头组成的字符串
+16. setResquestHeader(name,value)：设置请求头
+
