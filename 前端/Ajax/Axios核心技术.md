@@ -251,3 +251,26 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest
 15. getAllResponseHeaders()：获取所有响应头组成的字符串
 16. setResquestHeader(name,value)：设置请求头
 
+#### 2.5 XHR 的ajax封装（简单版axios）
+
+##### 2.5.1 特点
+
+1. 函数的返回值为promise，成功的结果为response，异常的结果为error
+
+2. 能处理多种类型的请求：GET/POST/PUT/DELETE
+
+3. 函数的参数为一个配置对象
+
+   {
+
+   ​	url:",		//请求地址
+
+   ​	method:",		//请求方式 GET/POST/PUT/DELETE
+
+   ​	params:{},		//GET/DELETE请求的query参数
+
+   ​	data:{},		//POST或DELETE请求的请求体参数
+
+   }
+
+4. 响应json数据自动解析为js
