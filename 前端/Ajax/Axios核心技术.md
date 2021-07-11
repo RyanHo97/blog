@@ -274,3 +274,5 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest
    }
 
 4. 响应json数据自动解析为js
+
+##### 2.5.2 编码实现
