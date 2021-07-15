@@ -1,0 +1,24 @@
+    <div class="testimg">
+        <ul>
+            <li class="1" onclick="testadd(1)">
+                <img src="./static/image/plat_004.png" alt="">
+            </li>
+            <li class="2" onclick="testadd(2)">
+                <img src="./static/image/plat_005.png" alt="">
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <p><img class="there" src="" alt=""></p>
+    </div>
+
+    <script>
+        function testadd(imgid) {
+
+            var imgsrc = $("."+imgid+"").children("img").attr("src");
+
+            $(".there").attr("src", imgsrc);
+
+        }
+    </script>
