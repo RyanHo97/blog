@@ -1,0 +1,6 @@
+1.observer:true,//修改swiper自己或子元素时，自动初始化swiper
+2.observeParents:true,//修改swiper的父元素时，自动初始化swiper
+3.不行直接设  width，也可以
+4.添加这两个属性就好了
+
+感谢：https://blog.csdn.net/weixin_30570101/article/details/99798194
