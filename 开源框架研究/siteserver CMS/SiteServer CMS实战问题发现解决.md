@@ -19,5 +19,8 @@
   大部分 STL 标签拥有 isDynamic 属性，如：`<stl:contents isDynamic="true"></stl:contents>`。设置此属性的结果与以下代码一致：`<stl:dynamic><stl:contents></stl:contents><stl:dynamic>`
 
   <stl:dynamic> 中可以包含任何 STL 标签或 HTML 标签。
-
   
+日期：2021年8月9日
+
+- 问题：绑定swiper无法动态显示
+-   
