@@ -22,5 +22,17 @@
   
 日期：2021年8月9日
 
-- 问题：绑定swiper无法动态显示
--   
+- 问题：模板stl:contents范围错误
+
+  解决方案
+
+  <stl:contents channelIndex="news" scope="范围">
+
+  scope - 范围
+  内容范围。此属性只可属于以下可能的取值的一种。
+
+  "self" 只显示本栏目下的所有内容
+  "children" 只显示下一极子栏目下的所有内容
+  "selfAndChildren" 显示本级栏目及下一极子栏目下的所有内容
+  "descendant" 显示所有级别的子栏目下的所有内容
+  "all" 显示全部内容
