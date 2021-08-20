@@ -20,6 +20,7 @@ jeecgboot
 javascript  
 webpack  
 axios  
-C
+C  
+Ajax  
 github如果访问不进来或者慢  
 可以参考https://www.cnblogs.com/liuchao888/p/11733996.html  
