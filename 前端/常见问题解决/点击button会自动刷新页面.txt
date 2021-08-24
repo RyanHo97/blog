@@ -1,0 +1,17 @@
+因为button标签按钮会提交表单。
+
+解决方法如下：
+
+1、将<button></button>改为<input type="button">  或者直接在<button>中添加属性 type="button".
+
+2、在button的点击事件中加入“e.preventDefult()” 
+
+$('btn').click(function(e){
+
+e.preventDefult();
+
+});
+
+ 
+
+ 加入type = "button"后解决问题。
