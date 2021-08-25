@@ -21,6 +21,7 @@
 					//ajax
 					$.ajax({
     				        type: "POST",
+		                        async : false,
     				        url: "/api接口地址",
     				        dataType: "json",
     				        timeout: 0,
@@ -29,11 +30,11 @@
     				    },
     				    success: function(data) {
     				        if (data.success) {
-								$(".projectMoney").eq(i-1).empty();
-								$(".projectPeople").eq(i-1).empty();
+						$(".projectMoney").eq(i).empty();
+						$(".projectPeople").eq(i).empty();
 
-    				            $(".projectMoney").eq(i-1).text(data.result.sysData.money);
-    				            $(".projectPeople").eq(i-1).text('爱心人次：'+data.result.sysData.cishu);
+    				            	$(".projectMoney").eq(i).text(data.result.sysData.money);
+    				            	$(".projectPeople").eq(i).text('爱心人次：'+data.result.sysData.cishu);
     				        }
     				    },
     				    error: function(e) {
