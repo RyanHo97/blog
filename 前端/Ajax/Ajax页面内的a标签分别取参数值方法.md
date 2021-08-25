@@ -30,7 +30,7 @@
     				    },
     				    success: function(data) {
     				        if (data.success) {
-						$(".projectMoney").eq(i).empty();
+						$(".projectMoney").eq(i).empty();//eq() 方法返回带有被选元素的指定索引号的元素，索引号从 0 开头，所以第一个元素的索引号是 0（不是 1）。
 						$(".projectPeople").eq(i).empty();
 
     				            	$(".projectMoney").eq(i).text(data.result.sysData.money);
