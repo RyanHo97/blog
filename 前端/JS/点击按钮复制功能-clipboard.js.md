@@ -4,6 +4,10 @@
 
 借鉴：https://blog.csdn.net/qq_24147051/article/details/106908326
 
+Github地址：https://github.com/zenorocha/clipboard.js
+
+笔记作者：RyanHo97
+
 
 
 #### （1）介绍
