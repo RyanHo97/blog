@@ -36,3 +36,15 @@
   "selfAndChildren" 显示本级栏目及下一极子栏目下的所有内容
   "descendant" 显示所有级别的子栏目下的所有内容
   "all" 显示全部内容
+  
+  
+  日期：2021年12月3日
+
+- 问题：视频<stl:player>无法正常解析
+  问题原因
+  
+  模板调用内容使用的是{content.content}方式
+  
+  解决方案
+  
+  使用<stl:content type="content"></stl:content>即可解决。
