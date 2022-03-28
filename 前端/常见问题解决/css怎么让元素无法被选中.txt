@@ -1,0 +1,1 @@
+在css标签内，通过class(testpp)设置页面文字的css样式，将user-select属性设置为none，实现页面内容不被选中效果。
